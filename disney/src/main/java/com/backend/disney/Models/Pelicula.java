@@ -27,7 +27,7 @@ public class Pelicula {
     private String titulo;
     @NotNull
     private Date fecha_creacion;
-    //@Range(0,6)
+    //@Min(value = 0)
     @Column(nullable = true)
     private Integer calificación;
 
