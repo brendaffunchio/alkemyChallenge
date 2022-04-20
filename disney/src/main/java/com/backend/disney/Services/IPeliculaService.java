@@ -15,7 +15,7 @@ Pelicula createPelicula(Pelicula pelicula) throws Exception;
    void mapPeliculaToPeliculaDTO(Pelicula pelicula);
    List<PeliculaDTO> mapPeliculasToPeliculasDTO(List<Pelicula>peliculas);
    Pelicula getDetailsPelicula(Integer idPelicula) throws Exception;
-
+    List<PeliculaDTO> searchPeliculas(String nombre,Integer idGenero,String orden);
    List<PeliculaDTO> getPeliculasDTOByName(String nombre);
     List<PeliculaDTO>  getPeliculasDTOByFilterGenero(Integer idGenero);
     List<PeliculaDTO> getPeliculas();

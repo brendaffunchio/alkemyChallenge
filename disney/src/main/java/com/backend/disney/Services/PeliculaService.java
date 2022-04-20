@@ -27,7 +27,7 @@ public class PeliculaService implements IPeliculaService{
             repository.save(pelicula);
            return pelicula;
         }else throw new Exception("Cannot create movie");
- //falta guardar imagen
+
     }
 
     @Override
@@ -35,7 +35,6 @@ public class PeliculaService implements IPeliculaService{
       Pelicula peliculaExistente= repository.getById(pelicula.getId());
         if(peliculaExistente!=null){
 
-            peliculaExistente.setImagen(pelicula.getImagen());
             peliculaExistente.setCalificación(pelicula.getCalificación());
             peliculaExistente.setTitulo(pelicula.getTitulo());
             peliculaExistente.setGenero(pelicula.getGenero());
@@ -44,7 +43,7 @@ public class PeliculaService implements IPeliculaService{
             return peliculaExistente;
         }else throw new Exception("Cannot update movie");
 
-        //falta guardar imagen
+
     }
 
     @Override
@@ -80,6 +79,24 @@ peliculasDto.add(peliculaDTO);
             return pelicula;
         }else throw new Exception("Cannot get movie");
 
+    }
+
+    @Override
+    public List<PeliculaDTO> searchPeliculas(String nombre, Integer idGenero, String orden) {
+        List<PeliculaDTO>peliculas=new LinkedList<>();
+        if(nombre!=null){
+            peliculas = getPeliculasDTOByName(nombre);
+
+        }else if(idGenero!=null){
+
+            peliculas = getPeliculasDTOByFilterGenero(idGenero);
+        } else peliculas = getPeliculas();
+
+        if(orden!=null){
+
+            peliculas= orderResultsPeliculasDTO(orden,peliculas);
+        }
+        return peliculas;
     }
 
     @Override

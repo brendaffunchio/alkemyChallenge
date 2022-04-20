@@ -27,13 +27,22 @@ public class PersonajeService implements IPersonajeService{
             return personaje;
         }
         else throw new Exception("Cannot create personaje");
-        //falta guardar imagen
+
 
     }
 
     @Override
-    public Personaje updatePersonaje(Personaje personaje) {
-        return null;
+    public Personaje updatePersonaje(Personaje personaje) throws Exception  {
+Personaje personajeExistente = repository.getById(personaje.getId());
+if(personajeExistente!=null){
+    personajeExistente.setImagen(personaje.getImagen());
+    personajeExistente.setEdad(personaje.getEdad());
+    personajeExistente.setHistoria(personaje.getHistoria());
+    personajeExistente.setPeso(personaje.getPeso());
+    personajeExistente.setNombre(personaje.getNombre());
+    repository.save(personajeExistente);
+    return personajeExistente;
+}else throw new Exception("Cannot update character");
     }
 
     @Override
@@ -73,25 +82,45 @@ PersonajeDTO pDTO= new PersonajeDTO(p.getImagen(),p.getNombre());
     }
 
     @Override
-    public List<PersonajeDTO> getPersonajesDtoByFilter(Integer edad, Integer peso, Integer idPelicula) {
-        //no se si hacer tod junto o el de id pelicula por separado
+    public List<PersonajeDTO> searchPersonajes(String nombre,Integer edad, Integer peso, Integer idPelicula) {
 
-        if(edad!=null || peso!=null){
-           List<Personaje>personajes=  repository.findAllByFilter(edad, peso);
-          return mapPersonajesToPersonajesDTO(personajes);
+        if(nombre!=null) {
+            return getPersonajesDTOByName(nombre);
+        }else if(edad!=null || peso!=null){
+          return getPersonajesDTOByAgeOrweight(edad,peso);
         }else if(idPelicula!=null){
-Pelicula pelicula = peliculaRepository.getById(idPelicula);
-List<Personaje>personajesPelicula=pelicula.getPersonajes();
-
-            return mapPersonajesToPersonajesDTO(personajesPelicula);
+            return getPersonajesDTOByMovie(idPelicula);
 
         }
-        return null;
+        return getPersonajes();
     }
 
     @Override
     public List<PersonajeDTO> getPersonajesDTOByName(String name) {
        List<Personaje> personajes = repository.findAllByName(name);
+        return mapPersonajesToPersonajesDTO(personajes);
+    }
+
+    @Override
+    public List<PersonajeDTO> getPersonajesDTOByAgeOrweight(Integer edad, Integer peso) {
+        List<Personaje>personajes=  repository.findAllByFilter(edad, peso);
+        return mapPersonajesToPersonajesDTO(personajes);
+    }
+
+    @Override
+    public List<PersonajeDTO> getPersonajesDTOByMovie(Integer idPelicula) {
+        Pelicula pelicula = peliculaRepository.getById(idPelicula);
+        if(pelicula!=null) {
+            List<Personaje> personajesPelicula = pelicula.getPersonajes();
+
+            return mapPersonajesToPersonajesDTO(personajesPelicula);
+        }
+        return null;
+    }
+
+    @Override
+    public List<PersonajeDTO> getPersonajes() {
+        List<Personaje> personajes = repository.findAll();
         return mapPersonajesToPersonajesDTO(personajes);
     }
 }

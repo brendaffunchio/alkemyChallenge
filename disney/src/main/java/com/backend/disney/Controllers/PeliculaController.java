@@ -5,8 +5,6 @@ import com.backend.disney.ModelsDTO.PeliculaDTO;
 import com.backend.disney.Services.IPeliculaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.LinkedList;
 import java.util.List;
 
 @RestController
@@ -42,25 +40,42 @@ public class PeliculaController {
             return e.getMessage().toString();
         }
     }
-   // @RequestParam ("folder_id")Integer folder_id
 
-    @GetMapping(path="/",consumes = "application/json", produces = "application/json")
-    public List<PeliculaDTO> getPeliculas (@RequestParam ("name") String nombre, @RequestParam("genre")Integer idGenero,@RequestParam("order")String orden){
-        List<PeliculaDTO>peliculas=new LinkedList<>();
-        if(nombre!=null){
-            peliculas = service.getPeliculasDTOByName(nombre);
+@GetMapping(path="/getDetails",consumes = "application/json", produces = "application/json")
+public Pelicula getMovieDetails(@RequestParam ("id") Integer id)throws Exception{
+        try{
+            return service.getDetailsPelicula(id);
 
-        }else if(idGenero!=null){
-
-            peliculas = service.getPeliculasDTOByFilterGenero(idGenero);
-        } else peliculas = service.getPeliculas();
-
-        if(orden!=null){
-
-          peliculas= service.orderResultsPeliculasDTO(orden,peliculas);
+        }catch(Exception e){
+            return null;
         }
-        return peliculas;
+
+}
+    @GetMapping(path="/",consumes = "application/json", produces = "application/json")
+    public List<PeliculaDTO> getMovies (@RequestParam (value = "name",required = false) String name, @RequestParam(value = "genre",required = false)Integer genre,@RequestParam("order")String order){
+
+       return service.searchPeliculas(name,genre,order);
     }
 
-    
+    @PostMapping(path = "/{idMovie}/characters/{idCharacter}", consumes = "application/json", produces = "application/json")
+    public String addCharacter(@PathVariable Integer idMovie,@PathVariable Integer idCharacter) throws Exception {
+
+        try{
+            service.addPersonaje(idMovie,idCharacter);
+            return "Character added";
+        }catch(Exception e){
+            return e.getMessage().toString();
+        }
+    }
+    @DeleteMapping(path = "/{idMovie}/characters/{idCharacter}", consumes = "application/json", produces = "application/json")
+    public String deleteCharacter(@PathVariable Integer idMovie,@PathVariable Integer idCharacter) throws Exception {
+
+        try{
+            service.removePersonaje(idMovie,idCharacter);
+            return "Character deleted";
+        }catch(Exception e){
+            return e.getMessage().toString();
+        }
+    }
+
 }
