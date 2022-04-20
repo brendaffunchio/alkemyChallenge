@@ -13,13 +13,15 @@ Pelicula createPelicula(Pelicula pelicula) throws Exception;
 
    void deletePelicula(Integer idPelicula) throws Exception;
    void mapPeliculaToPeliculaDTO(Pelicula pelicula);
-    void mapPeliculasToPeliculasDTO(List<Pelicula>peliculas);
+   List<PeliculaDTO> mapPeliculasToPeliculasDTO(List<Pelicula>peliculas);
    Pelicula getDetailsPelicula(Integer idPelicula) throws Exception;
 
    List<PeliculaDTO> getPeliculasDTOByName(String nombre);
     List<PeliculaDTO>  getPeliculasDTOByFilterGenero(Integer idGenero);
-   List <PeliculaDTO> orderResultsPeliculasDTO(String orden);
+    List<PeliculaDTO> getPeliculas();
+   List <PeliculaDTO> orderResultsPeliculasDTO(String orden,List<PeliculaDTO>peliculasDTO);
 
-   void addPersonaje (Integer idPelicula, Integer idPersonaje);
+   void addPersonaje (Integer idPelicula, Integer idPersonaje) throws Exception;
+   void removePersonaje(Integer idPelicula, Integer idPersonaje) throws Exception;
 
 }

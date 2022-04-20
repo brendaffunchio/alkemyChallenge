@@ -1,11 +1,15 @@
 package com.backend.disney.Services;
 
 import com.backend.disney.Models.Pelicula;
+import com.backend.disney.Models.Personaje;
 import com.backend.disney.ModelsDTO.PeliculaDTO;
 import com.backend.disney.Repositories.IPeliculaRepository;
+import com.backend.disney.Repositories.IPersonajeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.LinkedList;
 import java.util.List;
 
 @Service
@@ -14,12 +18,14 @@ public class PeliculaService implements IPeliculaService{
     @Autowired
     private IPeliculaRepository repository;
 
+    @Autowired
+    private IPersonajeRepository personajeRepository;
+
     @Override
     public Pelicula createPelicula(Pelicula pelicula) throws Exception {
         if(pelicula!=null){
             repository.save(pelicula);
-            mapPeliculaToPeliculaDTO(pelicula);
-            return pelicula;
+           return pelicula;
         }else throw new Exception("Cannot create movie");
  //falta guardar imagen
     }
@@ -56,8 +62,14 @@ public class PeliculaService implements IPeliculaService{
     }
 
     @Override
-    public void mapPeliculasToPeliculasDTO(List<Pelicula> peliculas) {
-
+    public List<PeliculaDTO> mapPeliculasToPeliculasDTO(List<Pelicula> peliculas) {
+List<PeliculaDTO> peliculasDto = new LinkedList<>();
+        for (Pelicula pelicula:peliculas)
+        {
+            PeliculaDTO peliculaDTO = new PeliculaDTO(pelicula.getImagen(),pelicula.getTitulo(),pelicula.getFecha_creacion());
+peliculasDto.add(peliculaDTO);
+        }
+        return peliculasDto;
     }
 
     @Override
@@ -72,24 +84,51 @@ public class PeliculaService implements IPeliculaService{
 
     @Override
     public List<PeliculaDTO> getPeliculasDTOByName(String nombre) {
-        List<Pelicula> Peliculas= repository.findAllByName(nombre);
-       //falta mapear
+        List<Pelicula> peliculas= repository.findAllByName(nombre);
+       return mapPeliculasToPeliculasDTO(peliculas);
 
-        return null;
     }
 
     @Override
     public List<PeliculaDTO> getPeliculasDTOByFilterGenero(Integer idGenero) {
+        List <Pelicula> peliculas = repository.findAllByGenre(idGenero);
+
+        return mapPeliculasToPeliculasDTO(peliculas);
+    }
+
+    @Override
+    public List<PeliculaDTO> getPeliculas() {
+        List <Pelicula> peliculas = repository.findAll();
+
+        return mapPeliculasToPeliculasDTO(peliculas);
+    }
+
+    @Override
+    public List<PeliculaDTO> orderResultsPeliculasDTO(String orden, List<PeliculaDTO>peliculasDTO) {
+
+       // peliculasDTO.sort();
         return null;
     }
 
     @Override
-    public List<PeliculaDTO> orderResultsPeliculasDTO(String orden) {
-        return null;
+    public void addPersonaje(Integer idPelicula, Integer idPersonaje) throws Exception {
+Pelicula pelicula = repository.getById(idPelicula);
+Personaje personaje= personajeRepository.getById(idPersonaje);
+if (pelicula!=null && personaje!=null){
+    pelicula.getPersonajes().add(personaje);
+    repository.save(pelicula);
+    personajeRepository.save(personaje);
+} else throw new Exception("Cannot add character");
     }
 
     @Override
-    public void addPersonaje(Integer idPelicula, Integer idPersonaje) {
-
+    public void removePersonaje(Integer idPelicula, Integer idPersonaje) throws Exception {
+        Pelicula pelicula = repository.getById(idPelicula);
+        Personaje personaje= personajeRepository.getById(idPersonaje);
+        if (pelicula!=null && personaje!=null){
+            pelicula.getPersonajes().remove(personaje);
+            repository.save(pelicula);
+            personajeRepository.save(personaje);
+        } else throw new Exception("Cannot remove character");
     }
 }

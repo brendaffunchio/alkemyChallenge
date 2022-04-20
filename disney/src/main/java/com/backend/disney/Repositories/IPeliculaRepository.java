@@ -13,4 +13,7 @@ public interface IPeliculaRepository extends JpaRepository<Pelicula,Integer>{
     @Query(value="SELECT * FROM PELICULA WHERE nombre = :name", nativeQuery = true)
     List<Pelicula> findAllByName(String name);
 
+    @Query(value="SELECT * FROM PELICULA WHERE genero_id = :idGenero", nativeQuery = true)
+    List<Pelicula> findAllByGenre(Integer idGenero);
+
 }
