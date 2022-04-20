@@ -5,6 +5,6 @@ import com.backend.disney.Models.Genero;
 
 public interface IGeneroService {
 
-    void createGenero(Genero genero) throws Exception;
+   Genero createGenero(Genero genero) throws Exception;
 
 }

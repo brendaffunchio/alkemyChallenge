@@ -12,9 +12,10 @@ public class GeneroService implements IGeneroService{
  private IGeneroRepository repository;
 
     @Override
-    public void createGenero(Genero genero) throws Exception {
+    public Genero createGenero(Genero genero) throws Exception {
  if(genero != null) {
      repository.save(genero);
+     return genero;
  }else throw new Exception("Cannot create genre");
     }
 }
