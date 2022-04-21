@@ -5,6 +5,11 @@ import com.backend.disney.ModelsDTO.PeliculaDTO;
 import com.backend.disney.Services.IPeliculaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 @RestController
@@ -15,8 +20,17 @@ public class PeliculaController {
     private IPeliculaService service;
 
     @PostMapping(path = "/create", consumes = "application/json", produces = "application/json")
-    public Pelicula createMovie(@RequestBody Pelicula pelicula) throws Exception {
+    public Pelicula createMovie(@RequestBody Pelicula pelicula,@RequestParam ("file") MultipartFile imagen) throws Exception {
         try {
+            if(!imagen.isEmpty()){
+                Path directorioImagenes = Paths.get("src//main/resources//static/images");
+                String rutaAbsoluta = directorioImagenes.toFile().getAbsolutePath();
+
+                byte[] bytesImg = imagen.getBytes();
+                Path rutaCompleta = Paths.get(rutaAbsoluta+"//"+ imagen.getOriginalFilename());
+                Files.write(rutaCompleta,bytesImg);
+                pelicula.setImagen(imagen.getOriginalFilename());
+            }
             return service.createPelicula(pelicula);
         } catch (Exception e) {
             return null;
@@ -24,8 +38,17 @@ public class PeliculaController {
     }
 
     @PutMapping(path = "/edit", consumes = "application/json", produces = "application/json")
-    public Pelicula editMovie(@RequestBody Pelicula pelicula) throws Exception {
+    public Pelicula editMovie(@RequestBody Pelicula pelicula,@RequestParam ("file") MultipartFile imagen) throws Exception {
         try {
+            if(!imagen.isEmpty()){
+                Path directorioImagenes = Paths.get("src//main/resources//static/images");
+                String rutaAbsoluta = directorioImagenes.toFile().getAbsolutePath();
+
+                byte[] bytesImg = imagen.getBytes();
+                Path rutaCompleta = Paths.get(rutaAbsoluta+"//"+ imagen.getOriginalFilename());
+                Files.write(rutaCompleta,bytesImg);
+                pelicula.setImagen(imagen.getOriginalFilename());
+            }
             return service.updatePelicula(pelicula);
         } catch (Exception e) {
             return null;

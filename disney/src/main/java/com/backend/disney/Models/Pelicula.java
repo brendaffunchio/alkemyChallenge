@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.Range;
 
 import javax.persistence.*;
 import java.util.*;
@@ -27,7 +28,8 @@ public class Pelicula {
     private String titulo;
     @NotNull
     private Date fecha_creacion;
-    //@Min(value = 0)
+
+    @Range(min = 0,max = 5)
     @Column(nullable = true)
     private Integer calificación;
 

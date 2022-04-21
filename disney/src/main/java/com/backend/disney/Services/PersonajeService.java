@@ -40,6 +40,7 @@ if(personajeExistente!=null){
     personajeExistente.setHistoria(personaje.getHistoria());
     personajeExistente.setPeso(personaje.getPeso());
     personajeExistente.setNombre(personaje.getNombre());
+
     repository.save(personajeExistente);
     return personajeExistente;
 }else throw new Exception("Cannot update character");

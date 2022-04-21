@@ -8,9 +8,10 @@ import com.backend.disney.Repositories.IPersonajeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class PeliculaService implements IPeliculaService{
@@ -34,7 +35,7 @@ public class PeliculaService implements IPeliculaService{
     public Pelicula updatePelicula(Pelicula pelicula) throws Exception {
       Pelicula peliculaExistente= repository.getById(pelicula.getId());
         if(peliculaExistente!=null){
-
+            peliculaExistente.setImagen(pelicula.getImagen());
             peliculaExistente.setCalificación(pelicula.getCalificación());
             peliculaExistente.setTitulo(pelicula.getTitulo());
             peliculaExistente.setGenero(pelicula.getGenero());
@@ -122,9 +123,13 @@ peliculasDto.add(peliculaDTO);
 
     @Override
     public List<PeliculaDTO> orderResultsPeliculasDTO(String orden, List<PeliculaDTO>peliculasDTO) {
+     if (orden=="asc"){
+        peliculasDTO.sort(Comparator.comparing(PeliculaDTO::getFecha_creacion));
+     }else {
+         peliculasDTO.sort(Comparator.comparing(PeliculaDTO::getFecha_creacion).reversed());
+     }
+        return peliculasDTO;
 
-       // peliculasDTO.sort();
-        return null;
     }
 
     @Override
