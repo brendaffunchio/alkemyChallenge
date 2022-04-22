@@ -10,8 +10,8 @@ import java.io.IOException;
 @Service
 public class EmailService implements IEmailService{
 
- @Value("${app.sendgrid.templateId}")
-private String templateId;
+ //@Value("${app.sendgrid.templateId}")
+private String templateId= System.getenv("APP_SENDGRID_TEMPLATEID");
 
 @Autowired
  private SendGrid sendGrid;

@@ -8,8 +8,8 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class SendGridConfig {
 
-    @Value("${app.sendgrid.key}")
-    private String appKey;
+  //  @Value("${app.sendgrid.key}")
+    private String appKey = System.getenv("APP_SENDGRID_KEY");
 
     @Bean
     public SendGrid getSendGrid(){
