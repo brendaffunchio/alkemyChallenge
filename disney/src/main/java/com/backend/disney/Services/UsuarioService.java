@@ -24,7 +24,7 @@ public class UsuarioService implements IUsuarioServices{
     @Override
     public Usuario login(String email, String password) throws Exception {
       if(email!=null && password!=null) {
-
+System.out.println("hola 2");
           Usuario usuario = repository.findByUsernameAndPassword(email, password);
           return usuario;
       }else throw new Exception("Cannot login");

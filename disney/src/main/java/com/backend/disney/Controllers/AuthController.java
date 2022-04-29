@@ -31,22 +31,27 @@ public class AuthController {
 
         try {
             Usuario user = usuarioServices.register(usuario);
+           // return "ok";
             return emailService.sendEmail(usuario.getUsername());
         }catch(Exception e){
             return "cannot register and send email";
         }
     }
 
-    @PostMapping("/login")
+    @PostMapping(path="/login",consumes = "application/json", produces = "application/json")
     public Usuario login(@RequestParam("username") String username,@RequestParam("password")String password)
             throws Exception {
-
-            Usuario user = usuarioServices.login(username,password);
-            if(user!=null){
-                String token = getJWTToken(username);
-            }
-        return user;
+        System.out.println("hola");
+    Usuario user = usuarioServices.login(username,password);
+    if(user!=null){
+        String token = getJWTToken(username);
     }
+
+    return user;
+
+}
+
+
 
     private String getJWTToken(String username) {
         String secretKey = "mySecretKey";
