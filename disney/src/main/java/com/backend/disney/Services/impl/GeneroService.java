@@ -1,12 +1,13 @@
-package com.backend.disney.Services;
+package com.backend.disney.Services.impl;
 
 import com.backend.disney.Models.Genero;
 import com.backend.disney.Repositories.IGeneroRepository;
+import com.backend.disney.Services.IGeneroService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class GeneroService implements IGeneroService{
+public class GeneroService implements IGeneroService {
 
  @Autowired
  private IGeneroRepository repository;

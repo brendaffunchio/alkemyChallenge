@@ -1,10 +1,11 @@
-package com.backend.disney.Services;
+package com.backend.disney.Services.impl;
 
 import com.backend.disney.Models.Pelicula;
 import com.backend.disney.Models.Personaje;
 import com.backend.disney.ModelsDTO.PersonajeDTO;
 import com.backend.disney.Repositories.IPeliculaRepository;
 import com.backend.disney.Repositories.IPersonajeRepository;
+import com.backend.disney.Services.IPersonajeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +13,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 @Service
-public class PersonajeService implements IPersonajeService{
+public class PersonajeService implements IPersonajeService {
 
     @Autowired
     private IPersonajeRepository repository;

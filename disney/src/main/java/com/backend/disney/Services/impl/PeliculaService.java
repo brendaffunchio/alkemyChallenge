@@ -1,10 +1,11 @@
-package com.backend.disney.Services;
+package com.backend.disney.Services.impl;
 
 import com.backend.disney.Models.Pelicula;
 import com.backend.disney.Models.Personaje;
 import com.backend.disney.ModelsDTO.PeliculaDTO;
 import com.backend.disney.Repositories.IPeliculaRepository;
 import com.backend.disney.Repositories.IPersonajeRepository;
+import com.backend.disney.Services.IPeliculaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -14,7 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.*;
 
 @Service
-public class PeliculaService implements IPeliculaService{
+public class PeliculaService implements IPeliculaService {
 
     @Autowired
     private IPeliculaRepository repository;

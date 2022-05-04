@@ -1,6 +1,7 @@
-package com.backend.disney.Services;
+package com.backend.disney.Services.impl;
 
 
+import com.backend.disney.Services.IAuthService;
 import org.springframework.stereotype.Service;
 
 @Service
