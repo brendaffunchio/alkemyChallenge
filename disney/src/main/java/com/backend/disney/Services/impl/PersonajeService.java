@@ -23,6 +23,7 @@ public class PersonajeService implements IPersonajeService {
 
     @Override
     public Personaje createPersonaje(Personaje personaje) throws Exception {
+
         if(personaje!=null){
             repository.save(personaje);
             return personaje;

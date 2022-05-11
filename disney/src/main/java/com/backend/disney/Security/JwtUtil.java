@@ -2,12 +2,19 @@ package com.backend.disney.Security;
 
 
 import com.backend.disney.Models.Usuario;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
+import org.springframework.http.MediaType;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.stereotype.Component;
 
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 
 @Component
@@ -19,7 +26,7 @@ public class JwtUtil {
     @Value("${expire.length:3600000}")
     private long validityInMilliseconds;
 
-    public String generateToken(Usuario usuario){
+    public String generateToken(UserDetails usuario){
 
         Date now = new Date();
         Date validity = new Date(now.getTime() + validityInMilliseconds);
@@ -32,7 +39,7 @@ public class JwtUtil {
                 .compact();
     }
 
-    public boolean validateToken(String token, Usuario usuario){
+    public boolean validateToken(String token, UserDetails usuario){
         return usuario
                 .getUsername().equals(extractUsername(token)) && !isTokenExpired(token);
     }
@@ -50,6 +57,5 @@ public class JwtUtil {
                 .setSigningKey(KEY)
                 .parseClaimsJws(token).getBody();
     }
-
 
     }
