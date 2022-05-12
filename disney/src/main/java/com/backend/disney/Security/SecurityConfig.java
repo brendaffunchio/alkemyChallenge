@@ -45,9 +45,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable().authorizeRequests()
                 .antMatchers(HttpMethod.POST, "/auth/login").permitAll()
                 .antMatchers(HttpMethod.POST, "/auth/register").permitAll()
-                .antMatchers(HttpMethod.POST, "/genre/create").hasRole("USER")
-                .anyRequest().authenticated().and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+                .antMatchers(HttpMethod.POST, "/genre/create").permitAll()
+                .antMatchers(HttpMethod.POST, "/movies/create").permitAll()
+                .antMatchers(HttpMethod.PUT, "/movies/edit").permitAll()
+                .antMatchers(HttpMethod.DELETE, "/movies/delete").permitAll()
+                .antMatchers(HttpMethod.GET, "/movies/getDetails").permitAll()
+                .antMatchers(HttpMethod.GET, "/movies/").permitAll()
+                .antMatchers(HttpMethod.POST, "/movies/{idMovie}/characters/{idCharacter}").permitAll()
+                .antMatchers(HttpMethod.POST, "/movies/{movieId}/characters/{characterId}").permitAll()
+                .antMatchers(HttpMethod.POST, "/characters/create").permitAll()
+                .antMatchers(HttpMethod.PUT, "/characters/edit").permitAll()
+                .antMatchers(HttpMethod.DELETE, "/characters/delete").permitAll()
+                .antMatchers(HttpMethod.POST, "/characters/").permitAll()
+                .anyRequest().authenticated().and();
+            //    .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+       // http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
 
     }

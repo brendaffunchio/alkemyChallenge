@@ -15,9 +15,9 @@ public class RolService implements IRolService {
 
     @Override
     public Rol findByName(String name) throws Exception {
-       if(name.isEmpty())throw new Exception(ExceptionMessages.MSG_BAD_REQUEST_NAME_ROLE);
+       if(name.isEmpty())throw new Exception(ExceptionMessages.NAME_ROL_EMPTY);
       Rol rol = repository.findByName(name);
-      if(rol==null)throw new Exception(ExceptionMessages.MSG_ROLE_NOT_FOUND);
+      if(rol==null)throw new Exception(ExceptionMessages.ROLE_NOT_FOUND);
 
       return rol;
     }

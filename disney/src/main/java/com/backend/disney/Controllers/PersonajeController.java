@@ -4,9 +4,11 @@ import com.backend.disney.Models.Personaje;
 import com.backend.disney.ModelsDTO.PersonajeDTO;
 import com.backend.disney.Services.IPersonajeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -20,54 +22,45 @@ public class PersonajeController {
     @Autowired
     private IPersonajeService service;
 
-    @PostMapping(path = "/create", consumes = "application/json", produces = "application/json")
-    public Personaje createCharacter(@RequestBody Personaje personaje,@RequestParam ("file") MultipartFile imagen) throws Exception {
+    @PostMapping(path = "/create")
+    public Personaje createCharacter(@ModelAttribute Personaje personaje, @RequestParam ("file") MultipartFile imagen, HttpServletResponse httpServletResponse) {
         try {
-            if(!imagen.isEmpty()){
-          Path directorioImagenes = Paths.get("src//main/resources//static/images");
-          String rutaAbsoluta = directorioImagenes.toFile().getAbsolutePath();
-
-          byte[] bytesImg = imagen.getBytes();
-          Path rutaCompleta = Paths.get(rutaAbsoluta+"//"+ imagen.getOriginalFilename());
-                Files.write(rutaCompleta,bytesImg);
-                personaje.setImagen(imagen.getOriginalFilename());
-            }
-            return service.createPersonaje(personaje);
+            httpServletResponse.setStatus(HttpStatus.OK.value());
+            return service.createPersonaje(personaje,imagen);
         } catch (Exception e) {
+            httpServletResponse.setStatus(HttpStatus.BAD_REQUEST.value());
             return null;
         }
     }
 
-    @PutMapping(path = "/edit", consumes = "application/json", produces = "application/json")
-    public Personaje editCharacter(@RequestBody Personaje personaje,@RequestParam ("file") MultipartFile imagen) throws Exception {
-        try { if(!imagen.isEmpty()) {
-            Path directorioImagenes = Paths.get("src//main/resources//static/images");
-            String rutaAbsoluta = directorioImagenes.toFile().getAbsolutePath();
-
-            byte[] bytesImg = imagen.getBytes();
-            Path rutaCompleta = Paths.get(rutaAbsoluta + "//" + imagen.getOriginalFilename());
-            Files.write(rutaCompleta, bytesImg);
-            personaje.setImagen(imagen.getOriginalFilename());
-        }
-            return service.updatePersonaje(personaje);
+    @PutMapping(path = "/edit")
+    public Personaje editCharacter(@RequestBody Personaje personaje,@RequestParam ("file") MultipartFile imagen,HttpServletResponse httpServletResponse) {
+       try{
+           httpServletResponse.setStatus(HttpStatus.OK.value());
+            return service.updatePersonaje(personaje,imagen);
         } catch (Exception e) {
+           httpServletResponse.setStatus(HttpStatus.BAD_REQUEST.value());
             return null;
         }
     }
     @DeleteMapping (path = "/delete", consumes = "application/json", produces = "application/json")
-    public String deleteCharacter(@RequestParam("id") Integer id) throws Exception {
+    public String deleteCharacter(@RequestParam("id") Integer id,HttpServletResponse httpServletResponse)  {
         try {
+            httpServletResponse.setStatus(HttpStatus.OK.value());
             service.deletePersonaje(id);
             return "Character deleted";
         } catch (Exception e) {
+            httpServletResponse.setStatus(HttpStatus.BAD_REQUEST.value());
             return e.getMessage().toString();
         }
     }
     @GetMapping(path="/getDetails",consumes = "application/json", produces = "application/json")
-    public Personaje getCharacterDetails(@RequestParam ("id") Integer id)throws Exception {
+    public Personaje getCharacterDetails(@RequestParam ("id") Integer id,HttpServletResponse httpServletResponse){
         try {
+            httpServletResponse.setStatus(HttpStatus.OK.value());
             return service.getDetailsPersonaje(id);
         } catch (Exception e) {
+            httpServletResponse.setStatus(HttpStatus.BAD_REQUEST.value());
             return null;
         }
     }

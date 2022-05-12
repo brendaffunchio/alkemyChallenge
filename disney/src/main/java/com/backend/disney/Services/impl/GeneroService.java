@@ -18,20 +18,28 @@ public class GeneroService implements IGeneroService {
  @Autowired
  private IGeneroRepository repository;
 
+
     @Override
-    public Genero createGenero(Genero genero) throws Exception {
- if(genero != null) {
-     repository.save(genero);
-     return genero;
- }else throw new Exception("Cannot create genre");
+    public Genero findByName(String nombre) throws Exception {
+        Genero genero = repository.findByName(nombre);
+        if(genero!= null) {
+            return genero;
+
+        }else throw new Exception(ExceptionMessages.GENRE_NULL);
+
     }
 
     @Override
     public Genero createGenero(Genero genero, MultipartFile imagen) throws Exception {
 
-        if (genero==null)throw new Exception(ExceptionMessages.MSG_BAD_REQUEST_GENRE);
-        if(genero.getNombre().isEmpty()) throw new Exception(ExceptionMessages.MSG_BAD_REQUEST_NAME_GENRE);
-        if(imagen.isEmpty()) throw new Exception(ExceptionMessages.MSG_BAD_REQUEST_IMAGE);
+        Genero generoExistente = repository.findByName(genero.getNombre());
+
+        if(generoExistente!=null) throw new Exception(ExceptionMessages.GENRE_EXISTS);
+        if (genero==null)throw new Exception(ExceptionMessages.GENRE_NULL);
+        if(genero.getNombre().isEmpty()) throw new Exception(ExceptionMessages.NAME_GENRE_EMPTY);
+        if(genero.getNombre()==null)throw new Exception(ExceptionMessages.NAME_GENRE_NULL);
+        if(imagen.isEmpty()) throw new Exception(ExceptionMessages.IMAGE_EMPTY);
+        if(imagen==null)throw new Exception(ExceptionMessages.IMAGE_NULL);
 
         Path directorioImagenes = Paths.get("src//main/resources//static/images");
         String rutaAbsoluta = directorioImagenes.toFile().getAbsolutePath();

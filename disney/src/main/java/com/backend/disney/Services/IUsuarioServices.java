@@ -7,7 +7,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 public interface IUsuarioServices {
 
-   UsuarioDtoResponse register(Usuario usuario, String rol) throws Exception;
+   Usuario register(Usuario usuario, String rol) throws Exception;
    Usuario login(Usuario usuario) throws Exception;
 
 }

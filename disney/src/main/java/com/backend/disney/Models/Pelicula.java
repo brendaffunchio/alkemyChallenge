@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Range;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.*;
 
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
@@ -15,7 +16,7 @@ import java.util.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Pelicula {
+public class Pelicula implements Serializable {
 
     @Id
     @GeneratedValue
@@ -29,9 +30,9 @@ public class Pelicula {
     @NotNull
     private Date fecha_creacion;
 
-    @Range(min = 0,max = 5)
+    @Range(min = 1,max = 5)
     @Column(nullable = true)
-    private Integer calificación;
+    private Integer calificacion;
 
     @ManyToMany()
     @JoinTable(name = "pelicula_personaje",
@@ -40,6 +41,7 @@ public class Pelicula {
     )
     private List<Personaje> personajes = new ArrayList<>();
 
+    @NotNull
     @ManyToOne()
     @JoinColumn(name = "genero_id", nullable = false)
     private Genero genero;

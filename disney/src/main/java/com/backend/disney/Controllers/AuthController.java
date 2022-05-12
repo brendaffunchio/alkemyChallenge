@@ -36,7 +36,7 @@ public class AuthController {
 
 
     @PostMapping("/register")
-    public UsuarioDtoResponse register(@RequestBody Usuario usuario, @RequestParam("rol") String rol, HttpServletResponse httpServletResponse) {
+    public Usuario register(@RequestBody Usuario usuario, @RequestParam("rol") String rol, HttpServletResponse httpServletResponse) {
         try {
             httpServletResponse.setStatus(HttpStatus.OK.value());
            return usuarioService.register(usuario,rol);

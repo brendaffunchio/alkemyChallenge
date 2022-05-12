@@ -6,6 +6,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 public interface IGeneroService {
 
-   Genero createGenero(Genero genero) throws Exception;
+   Genero findByName(String nombre) throws Exception;
    Genero createGenero(Genero genero, MultipartFile imagen) throws Exception;
 }

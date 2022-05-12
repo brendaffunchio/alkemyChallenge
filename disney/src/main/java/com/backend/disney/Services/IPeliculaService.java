@@ -2,14 +2,15 @@ package com.backend.disney.Services;
 
 import com.backend.disney.Models.Pelicula;
 import com.backend.disney.ModelsDTO.PeliculaDTO;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
 public interface IPeliculaService {
 
-Pelicula createPelicula(Pelicula pelicula) throws Exception;
+Pelicula createPelicula(Pelicula pelicula, MultipartFile imagen,String genero) throws Exception;
 
-    Pelicula updatePelicula(Pelicula pelicula) throws Exception;
+    Pelicula updatePelicula(Pelicula pelicula,MultipartFile imagen,String genero) throws Exception;
 
    void deletePelicula(Integer idPelicula) throws Exception;
    void mapPeliculaToPeliculaDTO(Pelicula pelicula);

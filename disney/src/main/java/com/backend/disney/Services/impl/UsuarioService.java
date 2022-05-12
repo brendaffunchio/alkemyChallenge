@@ -3,7 +3,6 @@ package com.backend.disney.Services.impl;
 import com.backend.disney.Exception.ExceptionMessages;
 import com.backend.disney.Models.Rol;
 import com.backend.disney.Models.Usuario;
-import com.backend.disney.ModelsDTO.UsuarioDtoResponse;
 import com.backend.disney.Repositories.IUsuarioRepository;
 import com.backend.disney.Security.JwtUtil;
 import com.backend.disney.Services.IEmailService;
@@ -41,32 +40,32 @@ public class UsuarioService implements IUsuarioServices, UserDetailsService {
     private JwtUtil jwtUtil;
 
     @Override
-    public UsuarioDtoResponse register(Usuario usuario, String rol) throws Exception {
-        if (usuario == null) throw new Exception(ExceptionMessages.MSG_BAD_REQUEST_USER);
-        if (usuario.getUsername().isEmpty()) throw new Exception(ExceptionMessages.MSG_BAD_REQUEST_USERNAME_USER);
-        if (usuario.getPassword().isEmpty()) throw new Exception(ExceptionMessages.MSG_BAD_REQUEST_PASSWORD_USER);
+    public Usuario register(Usuario usuario, String rol) throws Exception {
+        if (usuario == null) throw new Exception(ExceptionMessages.USER_NULL);
+        if (usuario.getUsername().isEmpty()) throw new Exception(ExceptionMessages.USERNAME_EMPTY);
+        if (usuario.getPassword().isEmpty()) throw new Exception(ExceptionMessages.PASSWORD_EMPTY);
         Usuario existente = repository.findByEmail(usuario.getUsername());
-        if (existente != null) throw new Exception(ExceptionMessages.MSG_USERNAME_IN_USE_USER);
+        if (existente != null) throw new Exception(ExceptionMessages.USERNAME_IN_USE);
         Rol role = rolService.findByName(rol);
         usuario.setPassword(encoder.encode(usuario.getPassword()));
         usuario.setRole(role);
-        repository.save(usuario);
-        String jwt = jwtUtil.generateToken(usuario);
+       /*Usuario usuarioSaved = */repository.save(usuario);
+       /* String jwt = jwtUtil.generateToken(usuarioSaved);
 
-        UsuarioDtoResponse response = new UsuarioDtoResponse(usuario.getId(), usuario.getUsername(), usuario.getPassword(), jwt);
-
+        UsuarioDtoResponse response = new UsuarioDtoResponse(usuarioSaved.getId(), usuarioSaved.getUsername(), usuarioSaved.getPassword(), jwt);
+*/
         emailService.sendEmail(usuario.getUsername());
-        return response;
+        return usuario;
 
     }
 
     @Override
     public Usuario login(@NotNull Usuario usuario) throws Exception {
-        if (usuario == null) throw new Exception(ExceptionMessages.MSG_BAD_REQUEST_USER);
-        if (usuario.getUsername().isEmpty()) throw new Exception(ExceptionMessages.MSG_BAD_REQUEST_USERNAME_USER);
-        if (usuario.getPassword().isEmpty()) throw new Exception(ExceptionMessages.MSG_BAD_REQUEST_PASSWORD_USER);
+        if (usuario == null) throw new Exception(ExceptionMessages.USER_NULL);
+        if (usuario.getUsername().isEmpty()) throw new Exception(ExceptionMessages.USERNAME_EMPTY);
+        if (usuario.getPassword().isEmpty()) throw new Exception(ExceptionMessages.PASSWORD_EMPTY);
         Usuario user = repository.findByEmailAndPassword(usuario.getUsername(), usuario.getPassword());
-        if (user == null) throw new Exception(ExceptionMessages.MSG_USER_NOT_FOUND);
+        if (user == null) throw new Exception(ExceptionMessages.USERNAME_PASSWORD_INCORRECT);
         return user;
     }
 
@@ -76,7 +75,7 @@ public class UsuarioService implements IUsuarioServices, UserDetailsService {
         Usuario user = repository.findByEmail(username);
 
         if (user == null) {
-            throw new UsernameNotFoundException(ExceptionMessages.MSG_USERNAME_NOT_FOUND);
+            throw new UsernameNotFoundException(ExceptionMessages.USER_NOT_FOUND);
         }
 
         List<GrantedAuthority> rol = new ArrayList<>();

@@ -23,20 +23,10 @@ public class GeneroController {
     @Autowired
     private IGeneroService service;
 
-    @PostMapping(path = "/create", consumes = "application/json", produces = "application/json")
-    public String createGenre(@RequestBody Genero genero, @RequestParam("file") MultipartFile imagen, HttpServletResponse httpServletResponse) throws Exception {
+    @PostMapping(path = "/create")
+    public String createGenre(@ModelAttribute Genero genero, @RequestParam("file") MultipartFile imagen, HttpServletResponse httpServletResponse) {
         try {
-           /* if (!imagen.isEmpty()) {
-                Path directorioImagenes = Paths.get("src//main/resources//static/images");
-                String rutaAbsoluta = directorioImagenes.toFile().getAbsolutePath();
 
-                byte[] bytesImg = imagen.getBytes();
-                Path rutaCompleta = Paths.get(rutaAbsoluta + "//" + imagen.getOriginalFilename());
-                Files.write(rutaCompleta, bytesImg);
-                genero.setImagen(imagen.getOriginalFilename());
-            }
-                 return service.createGenero(genero);
-               */
             httpServletResponse.setStatus(HttpStatus.OK.value());
             service.createGenero(genero,imagen);
             return "Genre created successfully ";
