@@ -51,36 +51,41 @@ public class PersonajeService implements IPersonajeService {
 
     @Override
     public Personaje updatePersonaje(Personaje personaje, MultipartFile imagen) throws Exception {
+        Boolean exists = repository.existsById(personaje.getId());
+        if (!exists) throw new Exception(ExceptionMessages.CHARACTER_NULL);
+
         Personaje personajeExistente = repository.getById(personaje.getId());
-        if (personajeExistente == null) throw new Exception(ExceptionMessages.CHARACTER_NULL);
-            personajeExistente.setImagen(personaje.getImagen());
-            personajeExistente.setEdad(personaje.getEdad());
-            personajeExistente.setHistoria(personaje.getHistoria());
-            personajeExistente.setPeso(personaje.getPeso());
-            personajeExistente.setNombre(personaje.getNombre());
 
-            if (!imagen.isEmpty()) {
+        if (!personaje.getNombre().isEmpty()) personajeExistente.setNombre(personaje.getNombre());
+        if (!personaje.getHistoria().isEmpty()) personajeExistente.setHistoria(personaje.getHistoria());
+        if (personaje.getEdad() != null) personajeExistente.setEdad(personaje.getEdad());
+        if (personaje.getPeso() != null) personajeExistente.setPeso(personaje.getPeso());
 
-                Path directorioImagenes = Paths.get("src//main/resources//static/images");
-                String rutaAbsoluta = directorioImagenes.toFile().getAbsolutePath();
 
-                byte[] bytesImg = imagen.getBytes();
-                Path rutaCompleta = Paths.get(rutaAbsoluta + "//" + imagen.getOriginalFilename());
-                Files.write(rutaCompleta, bytesImg);
-                personajeExistente.setImagen(imagen.getOriginalFilename());
-            }
+        if (!imagen.isEmpty()) {
 
-            repository.save(personajeExistente);
-            return personajeExistente;
+            Path directorioImagenes = Paths.get("src//main/resources//static/images");
+            String rutaAbsoluta = directorioImagenes.toFile().getAbsolutePath();
+
+            byte[] bytesImg = imagen.getBytes();
+            Path rutaCompleta = Paths.get(rutaAbsoluta + "//" + imagen.getOriginalFilename());
+            Files.write(rutaCompleta, bytesImg);
+            personajeExistente.setImagen(imagen.getOriginalFilename());
+        }
+
+        repository.save(personajeExistente);
+        return personajeExistente;
 
     }
 
     @Override
     public void deletePersonaje(Integer idPersonaje) throws Exception {
-        Personaje personaje = repository.getById(idPersonaje);
-        if (personaje != null) {
-            repository.delete(personaje);
-        } else throw new Exception("Cannot delete character");
+        if (idPersonaje == null) throw new Exception("Cannot delete character without id");
+        Boolean exists = repository.existsById(idPersonaje);
+        if (!exists) throw new Exception("Id:" + idPersonaje + "->" + ExceptionMessages.CHARACTER_NOT_FOUND);
+
+        repository.deleteById(idPersonaje);
+
     }
 
     @Override
@@ -105,10 +110,14 @@ public class PersonajeService implements IPersonajeService {
 
     @Override
     public Personaje getDetailsPersonaje(Integer id) throws Exception {
+        if (id == null) throw new Exception("Cannot delete character without id");
+        Boolean exists = repository.existsById(id);
+        if (!exists) throw new Exception("Id:" + id + "->" + ExceptionMessages.CHARACTER_NOT_FOUND);
+
         Personaje personaje = repository.getById(id);
-        if (personaje != null) {
-            return personaje;
-        } else throw new Exception("Cannot get character");
+
+        return personaje;
+
     }
 
     @Override

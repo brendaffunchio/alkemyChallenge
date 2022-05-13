@@ -12,7 +12,7 @@ import java.util.List;
 public interface IPersonajeRepository extends JpaRepository<Personaje,Integer> {
 
 
-    @Query(value="SELECT * FROM PERSONAJE WHERE nombre = :name", nativeQuery = true)
+    @Query(value="SELECT * FROM PERSONAJE WHERE nombre LIKE %:name%", nativeQuery = true)
     List<Personaje> findAllByName(String name);
 
    /* @Query(value="SELECT * FROM PERSONAJE p " +

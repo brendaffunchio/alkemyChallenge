@@ -44,7 +44,7 @@ public class PersonajeController {
         }
     }
     @DeleteMapping (path = "/delete", consumes = "application/json", produces = "application/json")
-    public String deleteCharacter(@RequestParam("id") Integer id,HttpServletResponse httpServletResponse)  {
+    public String deleteCharacter(@RequestParam(value="id",required = false) Integer id,HttpServletResponse httpServletResponse)  {
         try {
             httpServletResponse.setStatus(HttpStatus.OK.value());
             service.deletePersonaje(id);
@@ -55,7 +55,7 @@ public class PersonajeController {
         }
     }
     @GetMapping(path="/getDetails",consumes = "application/json", produces = "application/json")
-    public Personaje getCharacterDetails(@RequestParam ("id") Integer id,HttpServletResponse httpServletResponse){
+    public Personaje getCharacterDetails(@RequestParam (value="id",required = false) Integer id,HttpServletResponse httpServletResponse){
         try {
             httpServletResponse.setStatus(HttpStatus.OK.value());
             return service.getDetailsPersonaje(id);
@@ -64,8 +64,8 @@ public class PersonajeController {
             return null;
         }
     }
-    @GetMapping(path="/",consumes = "application/json", produces = "application/json")
-    public List<PersonajeDTO> getCharacters (@RequestParam (value = "name",required = false) String name, @RequestParam(value = "age",required = false)Integer age,@RequestParam("weight")Integer weight, @RequestParam("movies")Integer movies){
+    @GetMapping(path="/")
+    public List<PersonajeDTO> getCharacters (@RequestParam (value = "name",required = false) String name, @RequestParam(value = "age",required = false)Integer age,@RequestParam(value = "weight",required = false)Integer weight, @RequestParam(value="movies",required = false)Integer movies){
 
        return service.searchPersonajes(name,age,weight,movies);
 

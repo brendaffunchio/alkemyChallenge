@@ -52,11 +52,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, "/movies/getDetails").permitAll()
                 .antMatchers(HttpMethod.GET, "/movies/").permitAll()
                 .antMatchers(HttpMethod.POST, "/movies/{idMovie}/characters/{idCharacter}").permitAll()
-                .antMatchers(HttpMethod.POST, "/movies/{movieId}/characters/{characterId}").permitAll()
+                .antMatchers(HttpMethod.DELETE, "/movies/{movieId}/characters/{characterId}").permitAll()
                 .antMatchers(HttpMethod.POST, "/characters/create").permitAll()
                 .antMatchers(HttpMethod.PUT, "/characters/edit").permitAll()
                 .antMatchers(HttpMethod.DELETE, "/characters/delete").permitAll()
-                .antMatchers(HttpMethod.POST, "/characters/").permitAll()
+                .antMatchers(HttpMethod.GET, "/characters/getDetails").permitAll()
+                .antMatchers(HttpMethod.GET, "/characters/").permitAll()
                 .anyRequest().authenticated().and();
             //    .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
        // http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);

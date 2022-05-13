@@ -30,6 +30,15 @@ public class GeneroService implements IGeneroService {
     }
 
     @Override
+    public Genero getById(Integer id) throws Exception {
+        if(id==null)throw new Exception("The id is null");
+        Boolean exists = repository.existsById(id);
+        if(!exists)throw new Exception((ExceptionMessages.GENRE_NULL));
+
+        return repository.getById(id);
+    }
+
+    @Override
     public Genero createGenero(Genero genero, MultipartFile imagen) throws Exception {
 
         Genero generoExistente = repository.findByName(genero.getNombre());

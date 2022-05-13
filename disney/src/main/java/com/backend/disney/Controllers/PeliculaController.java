@@ -10,10 +10,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
+
 
 @RestController
 @RequestMapping("movies")
@@ -23,10 +21,10 @@ public class PeliculaController {
     private IPeliculaService service;
 
     @PostMapping(path = "/create")
-    public Pelicula createMovie(@ModelAttribute Pelicula pelicula, @RequestParam ("file") MultipartFile imagen, @RequestParam ("genre")@Nullable String genero, HttpServletResponse httpServletResponse) {
+    public Pelicula createMovie(@ModelAttribute Pelicula pelicula, @RequestParam("file") MultipartFile imagen, @RequestParam("genre") @Nullable Integer genero, HttpServletResponse httpServletResponse) {
         try {
             httpServletResponse.setStatus(HttpStatus.OK.value());
-            return service.createPelicula(pelicula,imagen,genero);
+            return service.createPelicula(pelicula, imagen, genero);
         } catch (Exception e) {
             httpServletResponse.setStatus(HttpStatus.BAD_REQUEST.value());
             return null;
@@ -34,67 +32,71 @@ public class PeliculaController {
     }
 
     @PutMapping(path = "/edit")
-    public Pelicula editMovie(@ModelAttribute Pelicula pelicula,@RequestParam ("file") MultipartFile imagen,@RequestParam ("genre")@Nullable String genero, HttpServletResponse httpServletResponse) {
+    public Pelicula editMovie(@ModelAttribute Pelicula pelicula, @RequestParam("file") MultipartFile imagen, @RequestParam("genre") @Nullable Integer genero, HttpServletResponse httpServletResponse) {
         try {
             httpServletResponse.setStatus(HttpStatus.OK.value());
-            return service.updatePelicula(pelicula,imagen,genero);
+            return service.updatePelicula(pelicula, imagen, genero);
         } catch (Exception e) {
             httpServletResponse.setStatus(HttpStatus.BAD_REQUEST.value());
             return null;
         }
     }
-    @DeleteMapping (path = "/delete")
-    public String deleteMovie(@RequestParam("id") Integer id ,HttpServletResponse httpServletResponse) {
+
+    @DeleteMapping(path = "/delete")
+    public String deleteMovie(@RequestParam(value="id",required = false) Integer id, HttpServletResponse httpServletResponse) {
         try {
             httpServletResponse.setStatus(HttpStatus.OK.value());
-           service.deletePelicula(id);
-           return "Movie deleted";
+            service.deletePelicula(id);
+            return "Movie deleted";
         } catch (Exception e) {
             httpServletResponse.setStatus(HttpStatus.BAD_REQUEST.value());
             return e.getMessage().toString();
         }
     }
 
-@GetMapping(path="/getDetails")
-public Pelicula getMovieDetails(@RequestParam ("id") Integer id ,HttpServletResponse httpServletResponse){
-        try{
+    @GetMapping(path = "/getDetails")
+    public Pelicula getMovieDetails(@RequestParam(value="id",required = false) Integer id, HttpServletResponse httpServletResponse) throws Exception {
+        try {
             httpServletResponse.setStatus(HttpStatus.OK.value());
             return service.getDetailsPelicula(id);
 
-        }catch(Exception e){
+
+        } catch (Exception e) {
             httpServletResponse.setStatus(HttpStatus.BAD_REQUEST.value());
             return null;
         }
 
-}
-    @GetMapping(path="/",consumes = "application/json", produces = "application/json")
-    public List<PeliculaDTO> getMovies (@RequestParam (value = "name",required = false) String name,
-                                        @RequestParam(value = "genre",required = false)Integer genre,
-                                        @RequestParam("order")String order){
-
-       return service.searchPeliculas(name,genre,order);
     }
 
-    @PostMapping(path = "/{idMovie}/characters/{idCharacter}", consumes = "application/json", produces = "application/json")
-    public String addCharacter(@PathVariable Integer idMovie,@PathVariable Integer idCharacter ,HttpServletResponse httpServletResponse)  {
+    @GetMapping(path = "/")
+    public List<PeliculaDTO> getMovies(@RequestParam(value = "name", required = false)String name,
+                                       @RequestParam(value = "genre", required = false)Integer genre,
+                                       @RequestParam(value = "order", required = false) String order) throws Exception {
 
-        try{
+        return service.searchPeliculas(name, genre, order);
+    }
+
+    @PostMapping(path = "/{idMovie}/characters/{idCharacter}")
+    public String addCharacter(@PathVariable Integer idMovie, @PathVariable Integer idCharacter, HttpServletResponse httpServletResponse) {
+
+        try {
             httpServletResponse.setStatus(HttpStatus.OK.value());
-            service.addPersonaje(idMovie,idCharacter);
+            service.addPersonaje(idMovie, idCharacter);
             return "Character added";
-        }catch(Exception e){
+        } catch (Exception e) {
             httpServletResponse.setStatus(HttpStatus.BAD_REQUEST.value());
             return e.getMessage().toString();
         }
     }
-    @DeleteMapping(path = "/{movieId}/characters/{characterId}", consumes = "application/json", produces = "application/json")
-    public String deleteCharacter(@PathVariable Integer movieId,@PathVariable Integer characterId ,HttpServletResponse httpServletResponse)  {
 
-        try{
+    @DeleteMapping(path = "/{movieId}/characters/{characterId}")
+    public String deleteCharacter(@PathVariable Integer movieId, @PathVariable Integer characterId, HttpServletResponse httpServletResponse) {
+
+        try {
             httpServletResponse.setStatus(HttpStatus.OK.value());
-            service.removePersonaje(movieId,characterId);
+            service.removePersonaje(movieId, characterId);
             return "Character deleted";
-        }catch(Exception e){
+        } catch (Exception e) {
             httpServletResponse.setStatus(HttpStatus.BAD_REQUEST.value());
             return e.getMessage().toString();
         }
