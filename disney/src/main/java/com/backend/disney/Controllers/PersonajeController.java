@@ -2,6 +2,7 @@ package com.backend.disney.Controllers;
 
 import com.backend.disney.Models.Personaje;
 import com.backend.disney.ModelsDTO.PersonajeDTO;
+import com.backend.disney.ModelsDTO.PersonajeDTOCompleto;
 import com.backend.disney.Services.IPersonajeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,7 +24,7 @@ public class PersonajeController {
     private IPersonajeService service;
 
     @PostMapping(path = "/create")
-    public Personaje createCharacter(@ModelAttribute Personaje personaje, @RequestParam ("file") MultipartFile imagen, HttpServletResponse httpServletResponse) {
+    public PersonajeDTOCompleto createCharacter(@ModelAttribute Personaje personaje, @RequestParam ("file") MultipartFile imagen, HttpServletResponse httpServletResponse) {
         try {
             httpServletResponse.setStatus(HttpStatus.OK.value());
             return service.createPersonaje(personaje,imagen);
@@ -34,7 +35,7 @@ public class PersonajeController {
     }
 
     @PutMapping(path = "/edit")
-    public Personaje editCharacter(@RequestBody Personaje personaje,@RequestParam ("file") MultipartFile imagen,HttpServletResponse httpServletResponse) {
+    public PersonajeDTOCompleto editCharacter(@RequestBody Personaje personaje,@RequestParam ("file") MultipartFile imagen,HttpServletResponse httpServletResponse) {
        try{
            httpServletResponse.setStatus(HttpStatus.OK.value());
             return service.updatePersonaje(personaje,imagen);
@@ -54,8 +55,8 @@ public class PersonajeController {
             return e.getMessage().toString();
         }
     }
-    @GetMapping(path="/getDetails",consumes = "application/json", produces = "application/json")
-    public Personaje getCharacterDetails(@RequestParam (value="id",required = false) Integer id,HttpServletResponse httpServletResponse){
+    @GetMapping(path="/getDetails")
+    public PersonajeDTOCompleto getCharacterDetails(@RequestParam (value="id",required = false) Integer id,HttpServletResponse httpServletResponse){
         try {
             httpServletResponse.setStatus(HttpStatus.OK.value());
             return service.getDetailsPersonaje(id);

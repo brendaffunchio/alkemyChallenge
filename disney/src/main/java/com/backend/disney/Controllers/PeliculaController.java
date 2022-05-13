@@ -2,6 +2,7 @@ package com.backend.disney.Controllers;
 
 import com.backend.disney.Models.Pelicula;
 import com.backend.disney.ModelsDTO.PeliculaDTO;
+import com.backend.disney.ModelsDTO.PeliculaDTOCompleta;
 import com.backend.disney.Services.IPeliculaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,10 +22,14 @@ public class PeliculaController {
     private IPeliculaService service;
 
     @PostMapping(path = "/create")
-    public Pelicula createMovie(@ModelAttribute Pelicula pelicula, @RequestParam("file") MultipartFile imagen, @RequestParam("genre") @Nullable Integer genero, HttpServletResponse httpServletResponse) {
+    public PeliculaDTOCompleta createMovie(@ModelAttribute Pelicula pelicula,
+                                           @RequestParam("file") MultipartFile imagen,
+                                           @RequestParam("genre") @Nullable Integer genero,
+                                           @RequestParam("idPersonajes")Integer[] idPersonajes,
+                                           HttpServletResponse httpServletResponse) {
         try {
             httpServletResponse.setStatus(HttpStatus.OK.value());
-            return service.createPelicula(pelicula, imagen, genero);
+            return service.createPelicula(pelicula, imagen, genero,idPersonajes);
         } catch (Exception e) {
             httpServletResponse.setStatus(HttpStatus.BAD_REQUEST.value());
             return null;
@@ -32,7 +37,7 @@ public class PeliculaController {
     }
 
     @PutMapping(path = "/edit")
-    public Pelicula editMovie(@ModelAttribute Pelicula pelicula, @RequestParam("file") MultipartFile imagen, @RequestParam("genre") @Nullable Integer genero, HttpServletResponse httpServletResponse) {
+    public PeliculaDTOCompleta editMovie(@ModelAttribute Pelicula pelicula, @RequestParam("file") MultipartFile imagen, @RequestParam("genre") @Nullable Integer genero, HttpServletResponse httpServletResponse) {
         try {
             httpServletResponse.setStatus(HttpStatus.OK.value());
             return service.updatePelicula(pelicula, imagen, genero);
@@ -55,7 +60,7 @@ public class PeliculaController {
     }
 
     @GetMapping(path = "/getDetails")
-    public Pelicula getMovieDetails(@RequestParam(value="id",required = false) Integer id, HttpServletResponse httpServletResponse) throws Exception {
+    public PeliculaDTOCompleta getMovieDetails(@RequestParam(value="id",required = false) Integer id, HttpServletResponse httpServletResponse) throws Exception {
         try {
             httpServletResponse.setStatus(HttpStatus.OK.value());
             return service.getDetailsPelicula(id);

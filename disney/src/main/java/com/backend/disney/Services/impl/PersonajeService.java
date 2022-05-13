@@ -3,9 +3,12 @@ package com.backend.disney.Services.impl;
 import com.backend.disney.Exception.ExceptionMessages;
 import com.backend.disney.Models.Pelicula;
 import com.backend.disney.Models.Personaje;
+import com.backend.disney.ModelsDTO.PeliculaDTO;
 import com.backend.disney.ModelsDTO.PersonajeDTO;
+import com.backend.disney.ModelsDTO.PersonajeDTOCompleto;
 import com.backend.disney.Repositories.IPeliculaRepository;
 import com.backend.disney.Repositories.IPersonajeRepository;
+import com.backend.disney.Services.IPeliculaService;
 import com.backend.disney.Services.IPersonajeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -24,10 +28,13 @@ public class PersonajeService implements IPersonajeService {
     private IPersonajeRepository repository;
 
     @Autowired
+    private IPeliculaService peliculaService;
+
+    @Autowired
     private IPeliculaRepository peliculaRepository;
 
     @Override
-    public Personaje createPersonaje(Personaje personaje, MultipartFile imagen) throws Exception {
+    public PersonajeDTOCompleto createPersonaje(Personaje personaje, MultipartFile imagen) throws Exception {
         if (personaje == null) throw new Exception(ExceptionMessages.CHARACTER_NULL);
         if (personaje.getNombre().isEmpty()) throw new Exception(ExceptionMessages.NAME_CHARACTER_EMPTY);
         if (personaje.getNombre() == null) throw new Exception(ExceptionMessages.NAME_CHARACTER_NULL);
@@ -44,13 +51,17 @@ public class PersonajeService implements IPersonajeService {
 
 
         repository.save(personaje);
-        return personaje;
+
+        PersonajeDTOCompleto personajeDTOCompleto = mapPersonajeToPersonajeDTOCompleto(personaje,
+                peliculaService.mapPeliculasToPeliculasDTO(personaje.getPeliculas()));
+
+        return personajeDTOCompleto;
 
 
     }
 
     @Override
-    public Personaje updatePersonaje(Personaje personaje, MultipartFile imagen) throws Exception {
+    public PersonajeDTOCompleto updatePersonaje(Personaje personaje, MultipartFile imagen) throws Exception {
         Boolean exists = repository.existsById(personaje.getId());
         if (!exists) throw new Exception(ExceptionMessages.CHARACTER_NULL);
 
@@ -74,8 +85,22 @@ public class PersonajeService implements IPersonajeService {
         }
 
         repository.save(personajeExistente);
-        return personajeExistente;
 
+        PersonajeDTOCompleto personajeDTOCompleto = mapPersonajeToPersonajeDTOCompleto(personaje,
+                peliculaService.mapPeliculasToPeliculasDTO(personaje.getPeliculas()));
+
+        return personajeDTOCompleto;
+
+    }
+
+    @Override
+    public Personaje getById(Integer id) throws Exception {
+        Boolean personajeExists = repository.existsById(id);
+
+        if (!personajeExists) throw new Exception(ExceptionMessages.CHARACTER_NULL);
+
+        Personaje personaje = repository.getById(id);
+        return personaje;
     }
 
     @Override
@@ -96,6 +121,26 @@ public class PersonajeService implements IPersonajeService {
     }
 
     @Override
+    public PersonajeDTOCompleto mapPersonajeToPersonajeDTOCompleto(Personaje personaje, List<PeliculaDTO> peliculas) {
+        PersonajeDTOCompleto personajeDTOCompleto = new PersonajeDTOCompleto(personaje.getImagen(),
+                personaje.getNombre(), personaje.getEdad(), personaje.getPeso(), personaje.getHistoria(), peliculas);
+
+        return personajeDTOCompleto;
+
+    }
+
+    @Override
+    public List<PersonajeDTO> mapArrayIdPersonajeToPersonajesDTO(Integer[] idPersonajes) throws Exception {
+        List<Personaje> personajes = new LinkedList<>();
+        for (Integer id : idPersonajes) {
+            Personaje p = getById(id);
+            personajes.add(p);
+        }
+        List<PersonajeDTO> personajesDTO = mapPersonajesToPersonajesDTO(personajes);
+        return personajesDTO;
+    }
+
+    @Override
     public List<PersonajeDTO> mapPersonajesToPersonajesDTO(List<Personaje> personajes) {
 
         List<PersonajeDTO> personajesDTO = new LinkedList<>();
@@ -109,14 +154,17 @@ public class PersonajeService implements IPersonajeService {
     }
 
     @Override
-    public Personaje getDetailsPersonaje(Integer id) throws Exception {
+    public PersonajeDTOCompleto getDetailsPersonaje(Integer id) throws Exception {
         if (id == null) throw new Exception("Cannot delete character without id");
         Boolean exists = repository.existsById(id);
         if (!exists) throw new Exception("Id:" + id + "->" + ExceptionMessages.CHARACTER_NOT_FOUND);
 
         Personaje personaje = repository.getById(id);
 
-        return personaje;
+        PersonajeDTOCompleto personajeDTOCompleto=mapPersonajeToPersonajeDTOCompleto(personaje,
+                peliculaService.mapPeliculasToPeliculasDTO(personaje.getPeliculas()));
+
+        return personajeDTOCompleto;
 
     }
 

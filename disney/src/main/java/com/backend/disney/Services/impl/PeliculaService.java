@@ -5,10 +5,13 @@ import com.backend.disney.Models.Genero;
 import com.backend.disney.Models.Pelicula;
 import com.backend.disney.Models.Personaje;
 import com.backend.disney.ModelsDTO.PeliculaDTO;
+import com.backend.disney.ModelsDTO.PeliculaDTOCompleta;
+import com.backend.disney.ModelsDTO.PersonajeDTO;
 import com.backend.disney.Repositories.IPeliculaRepository;
 import com.backend.disney.Repositories.IPersonajeRepository;
 import com.backend.disney.Services.IGeneroService;
 import com.backend.disney.Services.IPeliculaService;
+import com.backend.disney.Services.IPersonajeService;
 import org.apache.catalina.valves.rewrite.InternalRewriteMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,17 +32,20 @@ public class PeliculaService implements IPeliculaService {
     private IPersonajeRepository personajeRepository;
 
     @Autowired
+    private IPersonajeService personajeService;
+
+    @Autowired
     private IGeneroService generoService;
 
     @Override
-    public Pelicula createPelicula(Pelicula pelicula, MultipartFile imagen, Integer genero) throws Exception {
+    public PeliculaDTOCompleta createPelicula(Pelicula pelicula, MultipartFile imagen, Integer genero, Integer[] idPersonajes) throws Exception {
 
         if (pelicula == null) throw new Exception(ExceptionMessages.MOVIE_NULL);
         if (pelicula.getTitulo().isEmpty()) throw new Exception(ExceptionMessages.TITLE_MOVIE_EMPTY);
         if (pelicula.getTitulo() == null) throw new Exception(ExceptionMessages.TITLE_MOVIE_NULL);
         if (pelicula.getFecha_creacion() == null) throw new Exception(ExceptionMessages.CREATION_DATE_MOVIE_NULL);
         if (imagen.isEmpty()) throw new Exception(ExceptionMessages.IMAGE_EMPTY);
-        if(imagen==null)throw new Exception(ExceptionMessages.IMAGE_NULL);
+        if (imagen == null) throw new Exception(ExceptionMessages.IMAGE_NULL);
 
         if (pelicula.getCalificacion() != null) {
             if (pelicula.getCalificacion() < 1 || pelicula.getCalificacion() > 5)
@@ -59,13 +65,18 @@ public class PeliculaService implements IPeliculaService {
         pelicula.setImagen(imagen.getOriginalFilename());
 
         repository.save(pelicula);
-        return pelicula;
+
+
+      PeliculaDTOCompleta pDTOcompleta= mapPeliculaToPeliculaDTOCompleta(pelicula,
+              personajeService.mapArrayIdPersonajeToPersonajesDTO(idPersonajes));
+
+        return pDTOcompleta;
 
 
     }
 
     @Override
-    public Pelicula updatePelicula(Pelicula pelicula, MultipartFile imagen, Integer genero) throws Exception {
+    public PeliculaDTOCompleta updatePelicula(Pelicula pelicula, MultipartFile imagen, Integer genero) throws Exception {
 
         Boolean exists = repository.existsById(pelicula.getId());
         if (!exists) throw new Exception(ExceptionMessages.MOVIE_NOT_FOUND);
@@ -97,8 +108,22 @@ public class PeliculaService implements IPeliculaService {
         }
         repository.save(peliculaExistente);
 
-        return peliculaExistente;
+        PeliculaDTOCompleta pDTOcompleta= mapPeliculaToPeliculaDTOCompleta(pelicula,
+                personajeService.mapPersonajesToPersonajesDTO(pelicula.getPersonajes()));
 
+        return pDTOcompleta;
+
+    }
+
+    @Override
+    public Pelicula getById(Integer id) throws Exception {
+        Boolean peliculaExists = repository.existsById(id);
+
+        if (!peliculaExists) throw new Exception(ExceptionMessages.MOVIE_NULL);
+
+        Pelicula pelicula = repository.getById(id);
+
+        return pelicula;
 
     }
 
@@ -106,16 +131,29 @@ public class PeliculaService implements IPeliculaService {
     public void deletePelicula(Integer idPelicula) throws Exception {
         if (idPelicula == null) throw new Exception("Cannot delete movie without id");
         Boolean pelicula = repository.existsById(idPelicula);
-        if (!pelicula) throw new Exception("Id:" + idPelicula +"-> "+ ExceptionMessages.MOVIE_NOT_FOUND);
+        if (!pelicula) throw new Exception("Id:" + idPelicula + "-> " + ExceptionMessages.MOVIE_NOT_FOUND);
 
         repository.deleteById(idPelicula);
 
     }
 
     @Override
-    public void mapPeliculaToPeliculaDTO(Pelicula pelicula) {
-        Pelicula p = repository.getById(pelicula.getId());
+    public PeliculaDTO mapPeliculaToPeliculaDTO(Pelicula pelicula) {
+
         PeliculaDTO peliculaDTO = new PeliculaDTO(pelicula.getImagen(), pelicula.getTitulo(), pelicula.getFecha_creacion());
+
+        return peliculaDTO;
+    }
+
+
+    @Override
+    public PeliculaDTOCompleta mapPeliculaToPeliculaDTOCompleta(Pelicula pelicula, List<PersonajeDTO>personajes) throws Exception {
+
+        PeliculaDTOCompleta peliculaDTOCompleta = new PeliculaDTOCompleta(pelicula.getImagen(),
+                pelicula.getTitulo(), pelicula.getFecha_creacion(), pelicula.getCalificacion(),
+                personajes, pelicula.getGenero());
+
+        return peliculaDTOCompleta;
     }
 
     @Override
@@ -129,12 +167,17 @@ public class PeliculaService implements IPeliculaService {
     }
 
     @Override
-    public Pelicula getDetailsPelicula(Integer idPelicula) throws Exception {
-        if (idPelicula == null) throw new Exception("Cannot get detailes without id");
+    public PeliculaDTOCompleta getDetailsPelicula(Integer idPelicula) throws Exception {
+
+        if (idPelicula == null) throw new Exception("Cannot get details without id");
         Boolean exists = repository.existsById(idPelicula);
         if (!exists) throw new Exception(ExceptionMessages.MOVIE_NOT_FOUND);
         Pelicula pelicula = repository.getById(idPelicula);
-        return pelicula;
+
+        PeliculaDTOCompleta peliculaDTOCompleta = mapPeliculaToPeliculaDTOCompleta(pelicula,
+                personajeService.mapPersonajesToPersonajesDTO(pelicula.getPersonajes()));
+
+        return peliculaDTOCompleta;
 
     }
 
@@ -195,15 +238,11 @@ public class PeliculaService implements IPeliculaService {
     @Override
     public void addPersonaje(Integer idPelicula, Integer idPersonaje) throws Exception {
 
-        Boolean peliculaExists = repository.existsById(idPelicula);
-        Boolean personajeExists = personajeRepository.existsById(idPersonaje);
+        Pelicula pelicula = getById(idPelicula);
+        Personaje personaje = personajeService.getById(idPersonaje);
 
-        if (!peliculaExists || !personajeExists) throw new Exception("Cannot add character");
-
-        Pelicula pelicula = repository.getById(idPelicula);
-        Personaje personaje = personajeRepository.getById(idPersonaje);
-
-        if(pelicula.getPersonajes().contains(personaje))throw new Exception(ExceptionMessages.MOVIE_CHARACTER_CONTAINS);
+        if (pelicula.getPersonajes().contains(personaje))
+            throw new Exception(ExceptionMessages.MOVIE_CHARACTER_CONTAINS);
 
         pelicula.getPersonajes().add(personaje);
         repository.save(pelicula);
@@ -213,13 +252,8 @@ public class PeliculaService implements IPeliculaService {
 
     @Override
     public void removePersonaje(Integer idPelicula, Integer idPersonaje) throws Exception {
-        Boolean peliculaExists = repository.existsById(idPelicula);
-        Boolean personajeExists = personajeRepository.existsById(idPersonaje);
-
-        if (!peliculaExists || !personajeExists) throw new Exception("Cannot remove character");
-
-        Pelicula pelicula = repository.getById(idPelicula);
-        Personaje personaje = personajeRepository.getById(idPersonaje);
+        Pelicula pelicula = getById(idPelicula);
+        Personaje personaje = personajeService.getById(idPersonaje);
 
         pelicula.getPersonajes().remove(personaje);
         repository.save(pelicula);
