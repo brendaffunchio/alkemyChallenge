@@ -21,6 +21,8 @@ public interface IPeliculaService {
 
     PeliculaDTO mapPeliculaToPeliculaDTO(Pelicula pelicula);
 
+    void saveCharactersInMovie (Integer [] idPersonajes,Pelicula pelicula) throws Exception;
+
     PeliculaDTOCompleta mapPeliculaToPeliculaDTOCompleta(Pelicula pelicula, List<PersonajeDTO> personajes) throws Exception;
 
     List<PeliculaDTO> mapPeliculasToPeliculasDTO(List<Pelicula> peliculas);

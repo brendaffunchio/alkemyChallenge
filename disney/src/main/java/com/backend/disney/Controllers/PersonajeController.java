@@ -35,7 +35,7 @@ public class PersonajeController {
     }
 
     @PutMapping(path = "/edit")
-    public PersonajeDTOCompleto editCharacter(@RequestBody Personaje personaje,@RequestParam ("file") MultipartFile imagen,HttpServletResponse httpServletResponse) {
+    public PersonajeDTOCompleto editCharacter(@ModelAttribute Personaje personaje,@RequestParam ("file") MultipartFile imagen,HttpServletResponse httpServletResponse) {
        try{
            httpServletResponse.setStatus(HttpStatus.OK.value());
             return service.updatePersonaje(personaje,imagen);
@@ -44,7 +44,7 @@ public class PersonajeController {
             return null;
         }
     }
-    @DeleteMapping (path = "/delete", consumes = "application/json", produces = "application/json")
+    @DeleteMapping (path = "/delete")
     public String deleteCharacter(@RequestParam(value="id",required = false) Integer id,HttpServletResponse httpServletResponse)  {
         try {
             httpServletResponse.setStatus(HttpStatus.OK.value());

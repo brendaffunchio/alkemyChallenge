@@ -86,8 +86,8 @@ public class PersonajeService implements IPersonajeService {
 
         repository.save(personajeExistente);
 
-        PersonajeDTOCompleto personajeDTOCompleto = mapPersonajeToPersonajeDTOCompleto(personaje,
-                peliculaService.mapPeliculasToPeliculasDTO(personaje.getPeliculas()));
+        PersonajeDTOCompleto personajeDTOCompleto = mapPersonajeToPersonajeDTOCompleto(personajeExistente,
+                peliculaService.mapPeliculasToPeliculasDTO(personajeExistente.getPeliculas()));
 
         return personajeDTOCompleto;
 
@@ -133,6 +133,8 @@ public class PersonajeService implements IPersonajeService {
     public List<PersonajeDTO> mapArrayIdPersonajeToPersonajesDTO(Integer[] idPersonajes) throws Exception {
         List<Personaje> personajes = new LinkedList<>();
         for (Integer id : idPersonajes) {
+            Boolean exists = repository.existsById(id);
+            if(!exists) throw new Exception(ExceptionMessages.CHARACTER_NULL +" "+"ID:"+id);
             Personaje p = getById(id);
             personajes.add(p);
         }

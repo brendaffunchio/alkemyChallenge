@@ -64,11 +64,14 @@ public class PeliculaService implements IPeliculaService {
         Files.write(rutaCompleta, bytesImg);
         pelicula.setImagen(imagen.getOriginalFilename());
 
+        if(Arrays.stream(idPersonajes).count()!=0) {
+            saveCharactersInMovie(idPersonajes, pelicula);
+        }
         repository.save(pelicula);
 
 
       PeliculaDTOCompleta pDTOcompleta= mapPeliculaToPeliculaDTOCompleta(pelicula,
-              personajeService.mapArrayIdPersonajeToPersonajesDTO(idPersonajes));
+              personajeService.mapPersonajesToPersonajesDTO(pelicula.getPersonajes()));
 
         return pDTOcompleta;
 
@@ -108,8 +111,8 @@ public class PeliculaService implements IPeliculaService {
         }
         repository.save(peliculaExistente);
 
-        PeliculaDTOCompleta pDTOcompleta= mapPeliculaToPeliculaDTOCompleta(pelicula,
-                personajeService.mapPersonajesToPersonajesDTO(pelicula.getPersonajes()));
+        PeliculaDTOCompleta pDTOcompleta= mapPeliculaToPeliculaDTOCompleta(peliculaExistente,
+                personajeService.mapPersonajesToPersonajesDTO(peliculaExistente.getPersonajes()));
 
         return pDTOcompleta;
 
@@ -143,6 +146,18 @@ public class PeliculaService implements IPeliculaService {
         PeliculaDTO peliculaDTO = new PeliculaDTO(pelicula.getImagen(), pelicula.getTitulo(), pelicula.getFecha_creacion());
 
         return peliculaDTO;
+    }
+
+    @Override
+    public void saveCharactersInMovie(Integer[] idPersonajes,Pelicula pelicula) throws Exception {
+        List<Personaje> personajes = new LinkedList<>();
+        for (Integer id : idPersonajes) {
+            Boolean exists = personajeRepository.existsById(id);
+            if (!exists) throw new Exception(ExceptionMessages.CHARACTER_NULL + " " + "ID:" + id);
+            Personaje p = personajeService.getById(id);
+            pelicula.getPersonajes().add(p);
+            personajeRepository.save(p);
+        }
     }
 
 

@@ -30,9 +30,10 @@ public class Personaje implements Serializable {
     private Integer edad;
     @Column(nullable = true)
     private Integer peso;
+
     @Column(nullable = true)
     private String historia;
-
+    @Nullable
     @ManyToMany(mappedBy = "personajes")
     public List<Pelicula> peliculas = new ArrayList<>();
 }
