@@ -40,7 +40,10 @@ public class PersonajeService implements IPersonajeService {
         if (personaje.getNombre() == null) throw new Exception(ExceptionMessages.NAME_CHARACTER_NULL);
         if (imagen.isEmpty()) throw new Exception(ExceptionMessages.IMAGE_EMPTY);
         if (imagen == null) throw new Exception(ExceptionMessages.IMAGE_NULL);
-
+        if (!personaje.getHistoria().isEmpty()) {
+            if (personaje.getHistoria().length() > 255)
+                throw new Exception("The story should not be longer than 255 characters");
+        }
         Path directorioImagenes = Paths.get("src//main/resources//static/images");
         String rutaAbsoluta = directorioImagenes.toFile().getAbsolutePath();
 
@@ -49,7 +52,7 @@ public class PersonajeService implements IPersonajeService {
         Files.write(rutaCompleta, bytesImg);
         personaje.setImagen(imagen.getOriginalFilename());
 
-
+        personaje.setBorrado(false);
         repository.save(personaje);
 
         PersonajeDTOCompleto personajeDTOCompleto = mapPersonajeToPersonajeDTOCompleto(personaje,
@@ -68,10 +71,13 @@ public class PersonajeService implements IPersonajeService {
         Personaje personajeExistente = repository.getById(personaje.getId());
 
         if (!personaje.getNombre().isEmpty()) personajeExistente.setNombre(personaje.getNombre());
-        if (!personaje.getHistoria().isEmpty()) personajeExistente.setHistoria(personaje.getHistoria());
         if (personaje.getEdad() != null) personajeExistente.setEdad(personaje.getEdad());
         if (personaje.getPeso() != null) personajeExistente.setPeso(personaje.getPeso());
-
+        if (!personaje.getHistoria().isEmpty()) {
+            if (personaje.getHistoria().length() > 255)
+                throw new Exception("The story should not be longer than 255 characters");
+            personajeExistente.setHistoria(personaje.getHistoria());
+        }
 
         if (!imagen.isEmpty()) {
 
@@ -84,6 +90,7 @@ public class PersonajeService implements IPersonajeService {
             personajeExistente.setImagen(imagen.getOriginalFilename());
         }
 
+        personajeExistente.setBorrado(false);
         repository.save(personajeExistente);
 
         PersonajeDTOCompleto personajeDTOCompleto = mapPersonajeToPersonajeDTOCompleto(personajeExistente,
@@ -100,6 +107,8 @@ public class PersonajeService implements IPersonajeService {
         if (!personajeExists) throw new Exception(ExceptionMessages.CHARACTER_NULL);
 
         Personaje personaje = repository.getById(id);
+        if (personaje.getBorrado() == true) throw new Exception(ExceptionMessages.CHARACTER_NOT_FOUND);
+
         return personaje;
     }
 
@@ -108,8 +117,10 @@ public class PersonajeService implements IPersonajeService {
         if (idPersonaje == null) throw new Exception("Cannot delete character without id");
         Boolean exists = repository.existsById(idPersonaje);
         if (!exists) throw new Exception("Id:" + idPersonaje + "->" + ExceptionMessages.CHARACTER_NOT_FOUND);
+        Personaje p = repository.getById(idPersonaje);
+        p.setBorrado(true);
 
-        repository.deleteById(idPersonaje);
+        repository.save(p);
 
     }
 
@@ -134,7 +145,7 @@ public class PersonajeService implements IPersonajeService {
         List<Personaje> personajes = new LinkedList<>();
         for (Integer id : idPersonajes) {
             Boolean exists = repository.existsById(id);
-            if(!exists) throw new Exception(ExceptionMessages.CHARACTER_NULL +" "+"ID:"+id);
+            if (!exists) throw new Exception(ExceptionMessages.CHARACTER_NULL + " " + "ID:" + id);
             Personaje p = getById(id);
             personajes.add(p);
         }
@@ -157,13 +168,14 @@ public class PersonajeService implements IPersonajeService {
 
     @Override
     public PersonajeDTOCompleto getDetailsPersonaje(Integer id) throws Exception {
-        if (id == null) throw new Exception("Cannot delete character without id");
+        if (id == null) throw new Exception("Cannot get character without id");
         Boolean exists = repository.existsById(id);
         if (!exists) throw new Exception("Id:" + id + "->" + ExceptionMessages.CHARACTER_NOT_FOUND);
 
         Personaje personaje = repository.getById(id);
+        if (personaje.getBorrado() == true) throw new Exception(ExceptionMessages.CHARACTER_NOT_FOUND);
 
-        PersonajeDTOCompleto personajeDTOCompleto=mapPersonajeToPersonajeDTOCompleto(personaje,
+        PersonajeDTOCompleto personajeDTOCompleto = mapPersonajeToPersonajeDTOCompleto(personaje,
                 peliculaService.mapPeliculasToPeliculasDTO(personaje.getPeliculas()));
 
         return personajeDTOCompleto;
@@ -171,45 +183,58 @@ public class PersonajeService implements IPersonajeService {
     }
 
     @Override
-    public List<PersonajeDTO> searchPersonajes(String nombre, Integer edad, Integer peso, Integer idPelicula) {
+    public List<PersonajeDTO> searchPersonajes(String nombre, Integer edad, Integer peso, Integer idPelicula) throws Exception {
+        if (nombre == null) throw new Exception(ExceptionMessages.NAME_CHARACTER_NULL);
 
-        if (nombre != null) {
-            return getPersonajesDTOByName(nombre);
-        } else if (edad != null || peso != null) {
-            return getPersonajesDTOByAgeOrweight(edad, peso);
+        List<PersonajeDTO> personajes = new LinkedList<>();
+        if (!nombre.isEmpty()) {
+            personajes = getPersonajesDTOByName(nombre);
         } else if (idPelicula != null) {
-            return getPersonajesDTOByMovie(idPelicula);
+            personajes = getPersonajesDTOByMovie(idPelicula);
+
+        } else if (edad != null) {
+          personajes= getPersonajesDTOByAge(edad);
+
+        } else if (peso != null) {
+           personajes = getPersonajesDTOByWeight(peso);
+
+        }else personajes = getPersonajes();
+
+        return personajes;
+    }
+
+        @Override
+        public List<PersonajeDTO> getPersonajesDTOByName (String name){
+            List<Personaje> personajes = repository.findAllByName(name);
+            return mapPersonajesToPersonajesDTO(personajes);
+        }
+
+        @Override
+        public List<PersonajeDTO> getPersonajesDTOByAge (Integer edad){
+            List<Personaje> personajes = repository.findAllByAge(edad);
+            return mapPersonajesToPersonajesDTO(personajes);
+        }
+        @Override
+        public List<PersonajeDTO> getPersonajesDTOByWeight (Integer peso){
+            List<Personaje> personajes = repository.findAllByWeight(peso);
+            return mapPersonajesToPersonajesDTO(personajes);
+        }
+        @Override
+        public List<PersonajeDTO> getPersonajesDTOByMovie (Integer idPelicula) throws Exception {
+        Boolean exists= peliculaRepository.existsById(idPelicula);
+        if(!exists) throw new Exception(ExceptionMessages.MOVIE_NULL);
+          Pelicula pelicula = peliculaRepository.getById(idPelicula);
+
+                List<Personaje> personajesPelicula = pelicula.getPersonajes();
+
+
+                return mapPersonajesToPersonajesDTO(personajesPelicula);
 
         }
-        return getPersonajes();
-    }
 
-    @Override
-    public List<PersonajeDTO> getPersonajesDTOByName(String name) {
-        List<Personaje> personajes = repository.findAllByName(name);
-        return mapPersonajesToPersonajesDTO(personajes);
-    }
-
-    @Override
-    public List<PersonajeDTO> getPersonajesDTOByAgeOrweight(Integer edad, Integer peso) {
-        List<Personaje> personajes = repository.findAllByFilter(edad, peso);
-        return mapPersonajesToPersonajesDTO(personajes);
-    }
-
-    @Override
-    public List<PersonajeDTO> getPersonajesDTOByMovie(Integer idPelicula) {
-        Pelicula pelicula = peliculaRepository.getById(idPelicula);
-        if (pelicula != null) {
-            List<Personaje> personajesPelicula = pelicula.getPersonajes();
-
-            return mapPersonajesToPersonajesDTO(personajesPelicula);
+        @Override
+        public List<PersonajeDTO> getPersonajes () {
+            List<Personaje> personajes = repository.findAll();
+            return mapPersonajesToPersonajesDTO(personajes);
         }
-        return null;
     }
-
-    @Override
-    public List<PersonajeDTO> getPersonajes() {
-        List<Personaje> personajes = repository.findAll();
-        return mapPersonajesToPersonajesDTO(personajes);
-    }
-}

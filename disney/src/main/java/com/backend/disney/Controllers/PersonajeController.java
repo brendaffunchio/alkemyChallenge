@@ -66,7 +66,7 @@ public class PersonajeController {
         }
     }
     @GetMapping(path="/")
-    public List<PersonajeDTO> getCharacters (@RequestParam (value = "name",required = false) String name, @RequestParam(value = "age",required = false)Integer age,@RequestParam(value = "weight",required = false)Integer weight, @RequestParam(value="movies",required = false)Integer movies){
+    public List<PersonajeDTO> getCharacters (@RequestParam (value = "name",required = false) String name, @RequestParam(value = "age",required = false)Integer age,@RequestParam(value = "weight",required = false)Integer weight, @RequestParam(value="movies",required = false)Integer movies) throws Exception {
 
        return service.searchPersonajes(name,age,weight,movies);
 

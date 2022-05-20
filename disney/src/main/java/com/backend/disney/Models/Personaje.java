@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,9 +31,10 @@ public class Personaje implements Serializable {
     private Integer edad;
     @Column(nullable = true)
     private Integer peso;
-
-    @Column(nullable = true)
+    @Nullable
     private String historia;
+    @Column(nullable = true)
+    private Boolean borrado;
     @Nullable
     @ManyToMany(mappedBy = "personajes")
     public List<Pelicula> peliculas = new ArrayList<>();

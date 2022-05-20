@@ -29,13 +29,13 @@ public interface IPersonajeService {
 
     PersonajeDTOCompleto getDetailsPersonaje(Integer id) throws Exception;
 
-    List<PersonajeDTO> searchPersonajes(String nombre, Integer edad, Integer peso, Integer idPelicula);
+    List<PersonajeDTO> searchPersonajes(String nombre, Integer edad, Integer peso, Integer idPelicula) throws Exception;
 
     List<PersonajeDTO> getPersonajesDTOByName(String name);
 
-    List<PersonajeDTO> getPersonajesDTOByAgeOrweight(Integer edad, Integer peso);
-
-    List<PersonajeDTO> getPersonajesDTOByMovie(Integer idPelicula);
+    List<PersonajeDTO> getPersonajesDTOByAge(Integer edad);
+    List<PersonajeDTO> getPersonajesDTOByWeight(Integer peso);
+    List<PersonajeDTO> getPersonajesDTOByMovie(Integer idPelicula) throws Exception;
 
     List<PersonajeDTO> getPersonajes();
 
