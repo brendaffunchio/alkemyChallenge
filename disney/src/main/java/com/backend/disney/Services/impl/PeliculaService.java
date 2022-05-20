@@ -51,7 +51,7 @@ public class PeliculaService implements IPeliculaService {
             if (pelicula.getCalificacion() < 1 || pelicula.getCalificacion() > 5)
                 throw new Exception(ExceptionMessages.QUALIFICATION_MOVIE_BAD);
         }
-        if (genero == null) throw new Exception(ExceptionMessages.NAME_GENRE_EMPTY);
+        if (genero == null) throw new Exception(ExceptionMessages.ID_GENRE_NULL);
         Genero generoExistente = generoService.getById(genero);
         pelicula.setGenero(generoExistente);
 
@@ -132,7 +132,7 @@ public class PeliculaService implements IPeliculaService {
 
     @Override
     public void deletePelicula(Integer idPelicula) throws Exception {
-        if (idPelicula == null) throw new Exception("Cannot delete movie without id");
+        if (idPelicula == null) throw new Exception(ExceptionMessages.ID_MOVIE_DELETE_NULL);
         Boolean pelicula = repository.existsById(idPelicula);
         if (!pelicula) throw new Exception("Id:" + idPelicula + "-> " + ExceptionMessages.MOVIE_NOT_FOUND);
 
@@ -184,7 +184,7 @@ public class PeliculaService implements IPeliculaService {
     @Override
     public PeliculaDTOCompleta getDetailsPelicula(Integer idPelicula) throws Exception {
 
-        if (idPelicula == null) throw new Exception("Cannot get details without id");
+        if (idPelicula == null) throw new Exception(ExceptionMessages.ID_MOVIE_GET_DETAILS_NULL);
         Boolean exists = repository.existsById(idPelicula);
         if (!exists) throw new Exception(ExceptionMessages.MOVIE_NOT_FOUND);
         Pelicula pelicula = repository.getById(idPelicula);
@@ -269,6 +269,8 @@ public class PeliculaService implements IPeliculaService {
     public void removePersonaje(Integer idPelicula, Integer idPersonaje) throws Exception {
         Pelicula pelicula = getById(idPelicula);
         Personaje personaje = personajeService.getById(idPersonaje);
+        if (!pelicula.getPersonajes().contains(personaje))
+            throw new Exception(ExceptionMessages.MOVIE_CHARACTER_NOT_CONTAINS);
 
         pelicula.getPersonajes().remove(personaje);
         repository.save(pelicula);

@@ -31,7 +31,7 @@ public class GeneroService implements IGeneroService {
 
     @Override
     public Genero getById(Integer id) throws Exception {
-        if(id==null)throw new Exception("The id is null");
+        if(id==null)throw new Exception(ExceptionMessages.ID_GENRE_NULL);
         Boolean exists = repository.existsById(id);
         if(!exists)throw new Exception((ExceptionMessages.GENRE_NULL));
 

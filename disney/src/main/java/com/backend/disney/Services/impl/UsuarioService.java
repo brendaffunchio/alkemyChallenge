@@ -49,11 +49,8 @@ public class UsuarioService implements IUsuarioServices, UserDetailsService {
         Rol role = rolService.findByName(rol);
         usuario.setPassword(encoder.encode(usuario.getPassword()));
         usuario.setRole(role);
-       /*Usuario usuarioSaved = */repository.save(usuario);
-       /* String jwt = jwtUtil.generateToken(usuarioSaved);
+      repository.save(usuario);
 
-        UsuarioDtoResponse response = new UsuarioDtoResponse(usuarioSaved.getId(), usuarioSaved.getUsername(), usuarioSaved.getPassword(), jwt);
-*/
         emailService.sendEmail(usuario.getUsername());
         return usuario;
 

@@ -42,7 +42,7 @@ public class PersonajeService implements IPersonajeService {
         if (imagen == null) throw new Exception(ExceptionMessages.IMAGE_NULL);
         if (!personaje.getHistoria().isEmpty()) {
             if (personaje.getHistoria().length() > 255)
-                throw new Exception("The story should not be longer than 255 characters");
+                throw new Exception(ExceptionMessages.STORY_CHARACTER_LENGTH);
         }
         Path directorioImagenes = Paths.get("src//main/resources//static/images");
         String rutaAbsoluta = directorioImagenes.toFile().getAbsolutePath();
@@ -75,7 +75,7 @@ public class PersonajeService implements IPersonajeService {
         if (personaje.getPeso() != null) personajeExistente.setPeso(personaje.getPeso());
         if (!personaje.getHistoria().isEmpty()) {
             if (personaje.getHistoria().length() > 255)
-                throw new Exception("The story should not be longer than 255 characters");
+                throw new Exception(ExceptionMessages.STORY_CHARACTER_LENGTH);
             personajeExistente.setHistoria(personaje.getHistoria());
         }
 
@@ -114,10 +114,11 @@ public class PersonajeService implements IPersonajeService {
 
     @Override
     public void deletePersonaje(Integer idPersonaje) throws Exception {
-        if (idPersonaje == null) throw new Exception("Cannot delete character without id");
+        if (idPersonaje == null) throw new Exception(ExceptionMessages.ID_CHARACTER_DELETE_NULL);
         Boolean exists = repository.existsById(idPersonaje);
         if (!exists) throw new Exception("Id:" + idPersonaje + "->" + ExceptionMessages.CHARACTER_NOT_FOUND);
         Personaje p = repository.getById(idPersonaje);
+        if(p.getBorrado()==true)throw new Exception(ExceptionMessages.CHARACTER_DELETED);
         p.setBorrado(true);
 
         repository.save(p);
@@ -168,7 +169,7 @@ public class PersonajeService implements IPersonajeService {
 
     @Override
     public PersonajeDTOCompleto getDetailsPersonaje(Integer id) throws Exception {
-        if (id == null) throw new Exception("Cannot get character without id");
+        if (id == null) throw new Exception(ExceptionMessages.ID_CHARACTER_GET_DETAILS_NULL);
         Boolean exists = repository.existsById(id);
         if (!exists) throw new Exception("Id:" + id + "->" + ExceptionMessages.CHARACTER_NOT_FOUND);
 
