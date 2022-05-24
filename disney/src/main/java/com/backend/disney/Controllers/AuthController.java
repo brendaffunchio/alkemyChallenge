@@ -1,5 +1,5 @@
 package com.backend.disney.Controllers;
-
+import com.backend.disney.ModelsDTO.UsuarioDtoResponse;
 import com.backend.disney.Models.Usuario;
 import com.backend.disney.ModelsDTO.AuthenticationRequest;
 import com.backend.disney.ModelsDTO.AuthenticationResponse;
@@ -42,6 +42,7 @@ public class AuthController {
 
         } catch (Exception e) {
             httpServletResponse.setStatus(HttpStatus.BAD_REQUEST.value());
+           
             return null;
         }
     }
