@@ -2,9 +2,7 @@ package com.backend.disney.ModelsDTO;
 
 import com.backend.disney.Models.Genero;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.LinkedList;
 import java.util.List;
 
 public class PeliculaDTOCompleta {

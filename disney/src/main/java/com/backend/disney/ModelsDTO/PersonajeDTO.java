@@ -1,6 +1,5 @@
 package com.backend.disney.ModelsDTO;
 
-import com.sun.istack.NotNull;
 
 public class PersonajeDTO {
 

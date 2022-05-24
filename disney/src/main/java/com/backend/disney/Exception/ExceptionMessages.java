@@ -12,7 +12,7 @@ public class ExceptionMessages {
     public static final String STORY_CHARACTER_LENGTH="The story should not be longer than 255 characters";
     public static final String ID_CHARACTER_DELETE_NULL="  Cannot delete character without id";
     public static final String ID_CHARACTER_GET_DETAILS_NULL="Cannot get details character without id";
-    public static final String CHARACTER_DELETED="The character is already deleted";
+    public static final String CHARACTER_DELETED="The character was previously deleted, insert the id of a character that has not been deleted yet";
 
     public static final String ID_MOVIE_DELETE_NULL="Cannot delete movie without id";
     public static final String ID_MOVIE_GET_DETAILS_NULL="Cannot get details movie without id";

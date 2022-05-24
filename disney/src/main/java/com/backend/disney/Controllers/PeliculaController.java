@@ -25,7 +25,7 @@ public class PeliculaController {
     public PeliculaDTOCompleta createMovie(@ModelAttribute Pelicula pelicula,
                                            @RequestParam("file") MultipartFile imagen,
                                            @RequestParam("genre") @Nullable Integer genero,
-                                           @RequestParam("idPersonajes")Integer[] idPersonajes,
+                                           @RequestParam("idPersonajes")@Nullable Integer[] idPersonajes,
                                            HttpServletResponse httpServletResponse) {
         try {
             httpServletResponse.setStatus(HttpStatus.OK.value());

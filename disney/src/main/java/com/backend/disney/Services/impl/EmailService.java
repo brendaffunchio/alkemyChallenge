@@ -1,9 +1,8 @@
 package com.backend.disney.Services.impl;
 
-import com.backend.disney.Models.Usuario;
 import com.backend.disney.Repositories.IUsuarioRepository;
 import com.backend.disney.Services.IEmailService;
-import com.backend.disney.Services.IUsuarioServices;
+
 
 import com.sendgrid.Method;
 import com.sendgrid.Request;
@@ -30,7 +29,7 @@ import java.util.Map;
 public class EmailService implements IEmailService {
 
     @Value("${app.sendgrid.templateId}")
-    private String templateId; /*=System.getenv("APP_SENDGRID_TEMPLATEID")*/
+    private String templateId;
 
 
     @Autowired
@@ -58,24 +57,7 @@ public class EmailService implements IEmailService {
         }
     }
 
-       /* try {
-            Mail mail = prepareMail(email);
-            Request request = new Request();
-            request.setMethod(Method.POST);
 
-            request.setEndpoint("/auth/register");
-            request.setBody(mail.build());
-
-            Response response = sendGrid.api(request);
-
-            if (response != null) {
-                System.out.println("response code from sendgrid" + response.getHeaders());
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new IOException();
-        }*/
 
 
     @Override

@@ -1,0 +1,1006 @@
+{
+	"info": {
+		"_postman_id": "5a53a711-41f3-4ef5-98e4-5814d051032f",
+		"name": "disney app|Daffunchio",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "16405681"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\":\"brendaffunchio@gmail.com\",\r\n    \"password\":\"password\"\r\n   \r\n    \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/auth/register?rol=USER",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"auth",
+								"register"
+							],
+							"query": [
+								{
+									"key": "rol",
+									"value": "USER"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\":\"brendaffunchio@gmail.com\",\r\n    \"password\":\"password\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/auth/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Rol",
+			"item": [
+				{
+					"name": "Create Rol",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJicmVuZGFmZnVuQGdtYWlsLmNvbSIsImlhdCI6MTY1MzQzMTY4MywiZXhwIjoxNjUzNDM1MjgzfQ.W1h5vtDJET5B7vbSOZrXt5sJdEJmkJymh4M0v-WActU",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"ADMIN\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/role/create",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"role",
+								"create"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Genero",
+			"item": [
+				{
+					"name": "Create Genero",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJicmVuZGFmZnVuQGdtYWlsLmNvbSIsImlhdCI6MTY1MzQzMTY4MywiZXhwIjoxNjUzNDM1MjgzfQ.W1h5vtDJET5B7vbSOZrXt5sJdEJmkJymh4M0v-WActU",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "fantasia.jpg"
+								},
+								{
+									"key": "nombre",
+									"value": "Ciencia Ficcion",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:8080/genre/create",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"genre",
+								"create"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Personaje",
+			"item": [
+				{
+					"name": "Create Personaje",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJicmVuZGFmZnVuQGdtYWlsLmNvbSIsImlhdCI6MTY1MzQzMTY4MywiZXhwIjoxNjUzNDM1MjgzfQ.W1h5vtDJET5B7vbSOZrXt5sJdEJmkJymh4M0v-WActU",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "alicia.jpg"
+								},
+								{
+									"key": "nombre",
+									"value": "Alicia",
+									"type": "text"
+								},
+								{
+									"key": "edad",
+									"value": "20",
+									"type": "text"
+								},
+								{
+									"key": "peso",
+									"value": "54",
+									"type": "text"
+								},
+								{
+									"key": "historia",
+									"value": "Alicia es un personaje ficticio, protagonista de la novela infantil de Lewis Carroll, Las aventuras de Alicia en el país de las maravillas y de su secuela, A través del espejo",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:8080/characters/create",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"characters",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Personaje",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJicmVuZGFmZnVuQGdtYWlsLmNvbSIsImlhdCI6MTY1MzQyNzUyMiwiZXhwIjoxNjUzNDMxMTIyfQ.9hje1QvAEGv3tF5-Jzv1o8p8_D1_VKArqUbRKLNzalM",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "id",
+									"value": "3",
+									"type": "text"
+								},
+								{
+									"key": "file",
+									"type": "file",
+									"src": "maleficaPersonaje.jpg"
+								},
+								{
+									"key": "nombre",
+									"value": "Malefica",
+									"type": "text"
+								},
+								{
+									"key": "edad",
+									"value": "45",
+									"type": "text"
+								},
+								{
+									"key": "peso",
+									"value": "56",
+									"type": "text"
+								},
+								{
+									"key": "historia",
+									"value": "Maléfica es una bruja y hada malvada que hechiza a la protagonista, la princesa Aurora, la Bella Durmiente tras no ser invitada por su madre y su padre, el Rey Estéfano y la Reina Flor, a su bautizo. Es una de las villanas más malvadas de Disney.",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:8080/characters/edit",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"characters",
+								"edit"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Personaje",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJicmVuZGFmZnVuQGdtYWlsLmNvbSIsImlhdCI6MTY1MzQyODg1OCwiZXhwIjoxNjUzNDMyNDU4fQ.flbQuefHLlT41QFQ2r8lJN5UeUM2WvUsLo3hhxnrr0Y",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/characters/delete?id=18",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"characters",
+								"delete"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "18"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Details Personaje",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJicmVuZGFmZnVuQGdtYWlsLmNvbSIsImlhdCI6MTY1MzQyODg1OCwiZXhwIjoxNjUzNDMyNDU4fQ.flbQuefHLlT41QFQ2r8lJN5UeUM2WvUsLo3hhxnrr0Y",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/characters/getDetails?id=17",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"characters",
+								"getDetails"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "17"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Personaje(search)",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJicmVuZGFmZnVuQGdtYWlsLmNvbSIsImlhdCI6MTY1MzQzMTY4MywiZXhwIjoxNjUzNDM1MjgzfQ.W1h5vtDJET5B7vbSOZrXt5sJdEJmkJymh4M0v-WActU",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/characters/?name=malefica&age=&weight&movies",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"characters",
+								""
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "malefica"
+								},
+								{
+									"key": "age",
+									"value": ""
+								},
+								{
+									"key": "weight",
+									"value": null
+								},
+								{
+									"key": "movies",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Personaje(filterByAge)",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJicmVuZGFmZnVuQGdtYWlsLmNvbSIsImlhdCI6MTY1MzQyODg1OCwiZXhwIjoxNjUzNDMyNDU4fQ.flbQuefHLlT41QFQ2r8lJN5UeUM2WvUsLo3hhxnrr0Y",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/characters/?name&age=45&weight&movie",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"characters",
+								""
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": null
+								},
+								{
+									"key": "age",
+									"value": "45"
+								},
+								{
+									"key": "weight",
+									"value": null
+								},
+								{
+									"key": "movie",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Personaje(filterByWeight)",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJicmVuZGFmZnVuQGdtYWlsLmNvbSIsImlhdCI6MTY1MzQyODg1OCwiZXhwIjoxNjUzNDMyNDU4fQ.flbQuefHLlT41QFQ2r8lJN5UeUM2WvUsLo3hhxnrr0Y",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/characters/?name&age&weight=56&movies",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"characters",
+								""
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": null
+								},
+								{
+									"key": "age",
+									"value": null
+								},
+								{
+									"key": "weight",
+									"value": "56"
+								},
+								{
+									"key": "movies",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Personaje(filterByMovie)",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJicmVuZGFmZnVuQGdtYWlsLmNvbSIsImlhdCI6MTY1MzQzMjIxMSwiZXhwIjoxNjUzNDM1ODExfQ.e57KY9T7IeofkUB8xi5IbQPasfGTW4DUsJzbA0wFLTU",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/characters/?name&age&weight&movies=20",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"characters",
+								""
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": null
+								},
+								{
+									"key": "age",
+									"value": null
+								},
+								{
+									"key": "weight",
+									"value": null
+								},
+								{
+									"key": "movies",
+									"value": "20"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Pelicula",
+			"item": [
+				{
+					"name": "Create Pelicula",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJicmVuZGFmZnVuQGdtYWlsLmNvbSIsImlhdCI6MTY1MzQzMDAxNCwiZXhwIjoxNjUzNDMzNjE0fQ.YapEjxTiNyLMsgkO62Fr92PN_gfbY4SdLuzcVXKkYi4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "harryPotterPiedraFilosofal.jpg"
+								},
+								{
+									"key": "titulo",
+									"value": "Harry Potter",
+									"type": "text"
+								},
+								{
+									"key": "fecha_creacion",
+									"value": "05/14/2009",
+									"type": "text"
+								},
+								{
+									"key": "calificacion",
+									"value": "3",
+									"type": "text"
+								},
+								{
+									"key": "genre",
+									"value": "7",
+									"type": "text"
+								},
+								{
+									"key": "idPersonajes",
+									"value": "2",
+									"type": "text"
+								},
+								{
+									"key": "idPersonajes",
+									"value": "",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:8080/movies/create",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"movies",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Pelicula",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJicmVuZGFmZnVuQGdtYWlsLmNvbSIsImlhdCI6MTY1MzQzMDAxNCwiZXhwIjoxNjUzNDMzNjE0fQ.YapEjxTiNyLMsgkO62Fr92PN_gfbY4SdLuzcVXKkYi4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "id",
+									"value": "10",
+									"type": "text"
+								},
+								{
+									"key": "file",
+									"type": "file",
+									"src": "malefica.jpg"
+								},
+								{
+									"key": "titulo",
+									"value": "Malefica 2",
+									"type": "text"
+								},
+								{
+									"key": "fecha_creacion",
+									"value": "04/03/2016",
+									"type": "text"
+								},
+								{
+									"key": "calificacion",
+									"value": "5",
+									"type": "text"
+								},
+								{
+									"key": "genre",
+									"value": "7",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:8080/movies/edit",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"movies",
+								"edit"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Details Pelicula",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJicmVuZGFmZnVuQGdtYWlsLmNvbSIsImlhdCI6MTY1MzQzMDAxNCwiZXhwIjoxNjUzNDMzNjE0fQ.YapEjxTiNyLMsgkO62Fr92PN_gfbY4SdLuzcVXKkYi4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/movies/getDetails?id=11",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"movies",
+								"getDetails"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "11"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Pelicula",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJicmVuZGFmZnVuQGdtYWlsLmNvbSIsImlhdCI6MTY1MzQzMDAxNCwiZXhwIjoxNjUzNDMzNjE0fQ.YapEjxTiNyLMsgkO62Fr92PN_gfbY4SdLuzcVXKkYi4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/movies/delete?id=20",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"movies",
+								"delete"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "20"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Pelicula(search)",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJicmVuZGFmZnVuQGdtYWlsLmNvbSIsImlhdCI6MTY1MzQzMDAxNCwiZXhwIjoxNjUzNDMzNjE0fQ.YapEjxTiNyLMsgkO62Fr92PN_gfbY4SdLuzcVXKkYi4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/movies/?name=alicia&genre=&order=ASC",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"movies",
+								""
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "alicia"
+								},
+								{
+									"key": "genre",
+									"value": ""
+								},
+								{
+									"key": "order",
+									"value": "ASC"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Pelicula(filterByGenre)",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJicmVuZGFmZnVuQGdtYWlsLmNvbSIsImlhdCI6MTY1MzQzMDAxNCwiZXhwIjoxNjUzNDMzNjE0fQ.YapEjxTiNyLMsgkO62Fr92PN_gfbY4SdLuzcVXKkYi4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "http://localhost:8080/movies/?name&genre=7&order=DESC",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"movies",
+								""
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": null
+								},
+								{
+									"key": "genre",
+									"value": "7"
+								},
+								{
+									"key": "order",
+									"value": "DESC"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Character Pelicula",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJicmVuZGFmZnVuQGdtYWlsLmNvbSIsImlhdCI6MTY1MzQzMDAxNCwiZXhwIjoxNjUzNDMzNjE0fQ.YapEjxTiNyLMsgkO62Fr92PN_gfbY4SdLuzcVXKkYi4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/movies/10/characters/4",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"movies",
+								"10",
+								"characters",
+								"4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Character Pelicula",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJicmVuZGFmZnVuQGdtYWlsLmNvbSIsImlhdCI6MTY1MzQzMDAxNCwiZXhwIjoxNjUzNDMzNjE0fQ.YapEjxTiNyLMsgkO62Fr92PN_gfbY4SdLuzcVXKkYi4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/movies/10/characters/4",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"movies",
+								"10",
+								"characters",
+								"4"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

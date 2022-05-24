@@ -12,7 +12,6 @@ import com.backend.disney.Repositories.IPersonajeRepository;
 import com.backend.disney.Services.IGeneroService;
 import com.backend.disney.Services.IPeliculaService;
 import com.backend.disney.Services.IPersonajeService;
-import org.apache.catalina.valves.rewrite.InternalRewriteMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;

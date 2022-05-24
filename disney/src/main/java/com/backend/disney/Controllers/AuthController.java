@@ -3,7 +3,6 @@ package com.backend.disney.Controllers;
 import com.backend.disney.Models.Usuario;
 import com.backend.disney.ModelsDTO.AuthenticationRequest;
 import com.backend.disney.ModelsDTO.AuthenticationResponse;
-import com.backend.disney.ModelsDTO.UsuarioDtoResponse;
 import com.backend.disney.Security.JwtUtil;
 import com.backend.disney.Services.IUsuarioServices;
 import com.backend.disney.Services.impl.UsuarioService;
@@ -47,20 +46,6 @@ public class AuthController {
         }
     }
 
-    /*@PostMapping(path = "/login")
-    public String login(@RequestBody @NotNull Usuario usuario, HttpServletResponse httpServletResponse) {
-        try {
-            Usuario user = usuarioServices.login(usuario);
-            httpServletResponse.setStatus(HttpStatus.OK.value());
-            String token = jwtUtil.generateToken(user);
-            return token;
-
-        } catch (Exception e) {
-            httpServletResponse.setStatus(HttpStatus.BAD_REQUEST.value());
-            return e.getMessage();
-        }
-
-    }*/
     @PostMapping("/login")
     public ResponseEntity<AuthenticationResponse> Login(@RequestBody AuthenticationRequest request) {
 

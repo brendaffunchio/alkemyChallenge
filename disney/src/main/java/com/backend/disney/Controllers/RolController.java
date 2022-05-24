@@ -1,12 +1,10 @@
 package com.backend.disney.Controllers;
 
-import com.backend.disney.Models.Genero;
 import com.backend.disney.Models.Rol;
 import com.backend.disney.Services.IRolService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 
