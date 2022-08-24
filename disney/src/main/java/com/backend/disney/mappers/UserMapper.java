@@ -1,26 +1,26 @@
 package com.backend.disney.mappers;
 
-import com.backend.disney.models.Rol;
-import com.backend.disney.models.Usuario;
-import com.backend.disney.modelsDTO.UsuarioDTO;
+import com.backend.disney.models.Role;
+import com.backend.disney.models.User;
+import com.backend.disney.modelsDTO.UserDTO;
 import org.springframework.stereotype.Component;
 
 @Component
 public class UserMapper {
-    public Usuario mapDTOToEntity(UsuarioDTO dto, Rol role, String password) {
+    public User mapDTOToEntity(UserDTO dto, Role role, String password) {
 
-       Usuario usuario = new Usuario();
-usuario.setUsername(dto.getUsername());
-usuario.setPassword(password);
-usuario.setRole(role);
-        return usuario;
+       User user = new User();
+user.setUsername(dto.getUsername());
+user.setPassword(password);
+user.setRole(role);
+        return user;
     }
 
-    public UsuarioDTO mapEntityToUsuarioDTOToResponse(Usuario usuario) {
+    public UserDTO mapEntityToMovieDTOToResponse(User user) {
 
-        UsuarioDTO dto= new UsuarioDTO();
-        dto.setUsername(usuario.getUsername());
-        dto.setRol(usuario.getRole().getName());
+        UserDTO dto= new UserDTO();
+        dto.setUsername(user.getUsername());
+        dto.setRole(user.getRole().getName());
         return dto;
     }
 }

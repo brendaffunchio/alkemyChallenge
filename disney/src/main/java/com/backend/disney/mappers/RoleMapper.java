@@ -1,17 +1,17 @@
 package com.backend.disney.mappers;
 
-import com.backend.disney.models.Rol;
+import com.backend.disney.models.Role;
 import com.backend.disney.modelsDTO.RoleDTO;
 import org.springframework.stereotype.Component;
 
 @Component
 public class RoleMapper {
 
-    public Rol mapDTOToEntity(RoleDTO dto) {
+    public Role mapDTOToEntity(RoleDTO dto) {
 
-        Rol rol = new Rol();
-        rol.setName(dto.getName());
+        Role role = new Role();
+        role.setName(dto.getName().toUpperCase());
 
-        return rol;
+        return role;
     }
 }

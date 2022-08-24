@@ -1,6 +1,6 @@
 package com.backend.disney.security;
 
-import com.backend.disney.services.impl.UsuarioService;
+import com.backend.disney.services.impl.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -22,7 +22,7 @@ public class JwtFilter extends OncePerRequestFilter {
     private JwtUtil jwtUtil;
 
     @Autowired
-    private UsuarioService usuarioService;
+    private UserService usuarioService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest,

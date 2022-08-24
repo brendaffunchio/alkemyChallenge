@@ -1,12 +1,10 @@
 package com.backend.disney.mappers;
 
-import com.backend.disney.exception.ExceptionMessages;
-import com.backend.disney.models.Genero;
-import com.backend.disney.models.Pelicula;
-import com.backend.disney.models.Personaje;
-import com.backend.disney.modelsDTO.PeliculaDTO;
-import com.backend.disney.modelsDTO.PeliculaDTOCompleta;
-import com.backend.disney.modelsDTO.PersonajeDTO;
+import com.backend.disney.models.Genre;
+import com.backend.disney.models.Movie;
+import com.backend.disney.modelsDTO.MovieDTO;
+import com.backend.disney.modelsDTO.MovieDTOComplete;
+import com.backend.disney.modelsDTO.CharacterDTO;
 import org.springframework.stereotype.Component;
 
 import java.util.LinkedList;
@@ -16,40 +14,41 @@ import java.util.List;
 public class MovieMapper {
 
 
-    public PeliculaDTO mapMovieToPeliculaDTO(Pelicula pelicula) {
+    public MovieDTO mapMovieToMovieDTO(Movie movie) {
 
-        PeliculaDTO peliculaDTO = new PeliculaDTO(pelicula.getImagen(), pelicula.getTitulo(), pelicula.getFecha_creacion());
+        MovieDTO movieDTO = new MovieDTO(movie.getImage(), movie.getTitle(), movie.getCreation_date());
 
-        return peliculaDTO;
+        return movieDTO;
     }
-    public PeliculaDTOCompleta mapMovieToPeliculaDTOCompleta(Pelicula pelicula, List<PersonajeDTO>personajes){
+    public MovieDTOComplete mapMovieToMovieDTOComplete(Movie movie, List<CharacterDTO>characterDTOS){
 
-        PeliculaDTOCompleta dto = new PeliculaDTOCompleta(pelicula.getCalificacion(),
-                pelicula.getGenero().getNombre(),personajes);
-        dto.setImagen(pelicula.getImagen());
-        dto.setTitulo(pelicula.getTitulo());
-        dto.setFecha_creacion(pelicula.getFecha_creacion());
+        MovieDTOComplete dto = new MovieDTOComplete(movie.getQualification(),
+                movie.getGenre().getName(),characterDTOS);
+        dto.setImage(movie.getImage());
+        dto.setTitle(movie.getTitle());
+        dto.setCreation_date(movie.getCreation_date());
         return dto;
     }
 
-    public List<PeliculaDTO> mapPeliculasToPeliculasDTO(List<Pelicula> peliculas) {
-        List<PeliculaDTO> peliculasDto = new LinkedList<>();
-        for (Pelicula pelicula : peliculas) {
-            PeliculaDTO peliculaDTO = new PeliculaDTO(pelicula.getImagen(), pelicula.getTitulo(), pelicula.getFecha_creacion());
-            peliculasDto.add(peliculaDTO);
+    public List<MovieDTO> mapMoviesToMoviesDTO(List<Movie> movies) {
+        List<MovieDTO> movieDTOS = new LinkedList<>();
+        for (Movie movie : movies) {
+            MovieDTO movieDTO = new MovieDTO(movie.getImage(), movie.getTitle(), movie.getCreation_date());
+            movieDTOS.add(movieDTO);
         }
-        return peliculasDto;
+        return movieDTOS;
     }
 
-    public Pelicula mapPeliculaDTOCompletaToEntity(PeliculaDTOCompleta dto, Genero genero, String file){
+    public Movie mapMovieDTOCompleteToEntity(MovieDTOComplete dto, Genre genre, String file){
 
-        Pelicula pelicula = new Pelicula();
-        pelicula.setCalificacion(dto.getCalificacion());
-        pelicula.setTitulo(dto.getTitulo());
-        pelicula.setGenero(genero);
-        pelicula.setImagen(file);
-        pelicula.setFecha_creacion(dto.getFecha_creacion());
+        Movie movie = new Movie();
+        movie.setQualification(dto.getQualification());
+        movie.setTitle(dto.getTitle());
+        movie.setGenre(genre);
+        movie.setImage(file);
+        movie.setCreation_date(dto.getCreation_date());
 
-        return pelicula;
+        return movie;
     }
+
 }

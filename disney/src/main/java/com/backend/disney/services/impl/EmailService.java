@@ -1,6 +1,6 @@
 package com.backend.disney.services.impl;
 
-import com.backend.disney.repositories.IUsuarioRepository;
+import com.backend.disney.repositories.IUserRepository;
 import com.backend.disney.services.IEmailService;
 
 
@@ -29,9 +29,9 @@ public class EmailService implements IEmailService {
 
     private Configuration config;
     private SendGrid sendGrid;
-    private IUsuarioRepository repository;
+    private IUserRepository repository;
     @Autowired
-    public EmailService (Configuration config,SendGrid sendGrid,IUsuarioRepository repository){
+    public EmailService (Configuration config, SendGrid sendGrid, IUserRepository repository){
         this.config=config;
         this.sendGrid=sendGrid;
         this.repository=repository;

@@ -1,5 +1,6 @@
 package com.backend.disney.modelsDTO;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,9 +10,11 @@ import javax.validation.constraints.NotBlank;
 
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
-public class RoleDTO {
+@AllArgsConstructor
+public class CharacterDTO {
+
+    private String image;
     @NotBlank(message = "name cannot be blank")
     private String name;
 }

@@ -9,9 +9,10 @@ import javax.validation.constraints.NotBlank;
 
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
-public class RoleDTO {
-    @NotBlank(message = "name cannot be blank")
+@AllArgsConstructor
+public class GenreDTO {
+    private String image;
+    @NotBlank(message="name cannot be blank")
     private String name;
 }
