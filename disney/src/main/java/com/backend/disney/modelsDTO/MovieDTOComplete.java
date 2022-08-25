@@ -16,7 +16,6 @@ import java.util.List;
 public class MovieDTOComplete extends MovieDTO {
 
     @Range(min = 1, max = 5)
-    @NotBlank(message = "qualification cannot be blank")
     private Integer qualification;
     @NotBlank(message="genre cannot be blank")
     private String genre;

@@ -30,11 +30,11 @@ public class Movie {
     @NotNull
     @Column(name="titulo")
     private String title;
-    @NotNull
+
     @Column(name="fecha_creacion")
     private Date creation_date;
 
-    @Column(nullable = true,name="calificacion")
+    @Column(name="calificacion")
     private Integer qualification;
 
     @Column(name="borrado")

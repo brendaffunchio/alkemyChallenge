@@ -42,7 +42,7 @@ public class MovieController {
     }
 
     @PutMapping(path = "/edit")
-    public ResponseEntity<?> editMovie(@Valid @ModelAttribute MovieDTOComplete dto, @RequestParam("id") String id, @RequestParam(value = "file",required = false) MultipartFile file) {
+    public ResponseEntity<?> editMovie(@Valid @ModelAttribute MovieDTOComplete dto, @RequestParam("id") String id, @RequestParam(value = "file") MultipartFile file) {
         try {
             return new ResponseEntity<>(service.update(dto, id, file), HttpStatus.OK);
         } catch (NotFoundException e) {

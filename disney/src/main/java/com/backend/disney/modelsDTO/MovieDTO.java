@@ -3,6 +3,8 @@ package com.backend.disney.modelsDTO;
 import lombok.*;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @Getter
@@ -14,6 +16,5 @@ public class MovieDTO {
     private String image;
     @NotBlank(message = "title cannot be blank")
     private String title;
-    @NotBlank(message = "creation date cannot be blank")
     private Date creation_date;
 }
