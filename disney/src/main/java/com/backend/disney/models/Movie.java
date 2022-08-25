@@ -11,10 +11,10 @@ import java.util.*;
 
 @Getter
 @Setter
-@Table(name="Pelicula")
+@Table(name="pelicula")
 @AllArgsConstructor
 @NoArgsConstructor
-@SQLDelete(sql = "UPDATE Pelicula SET borrado = true where id = ?")
+@SQLDelete(sql = "UPDATE pelicula SET borrado = true where id = ?")
 @Where(clause = "borrado = false")
 @Entity
 public class Movie {
@@ -22,7 +22,7 @@ public class Movie {
     @Id
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(name = "UUID", strategy = "uuid2")
-    private Integer id;
+    private String id;
 
     @NotNull
     @Column(name="imagen")

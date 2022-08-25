@@ -11,8 +11,8 @@ import javax.persistence.*;
 
 @Getter
 @Setter
-@Table(name="Usuario")
-@SQLDelete(sql = "UPDATE Usuario SET borrado = true where id = ?")
+@Table(name="usuario")
+@SQLDelete(sql = "UPDATE usuario SET borrado = true where id = ?")
 @Where(clause = "borrado = false")
 @AllArgsConstructor
 @NoArgsConstructor
@@ -22,14 +22,14 @@ public class User {
     @Id
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(name = "UUID", strategy = "uuid2")
-    private Integer id;
+    private String id;
 
     @NotNull
     @Column(unique = true,name = "email")
     private String username;
 
     @NotNull
-    @Column(name="contraseña")
+    @Column(name="contrasena")
     private String password;
     @Column(name="borrado")
     private boolean soft_delete;

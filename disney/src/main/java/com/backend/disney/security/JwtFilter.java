@@ -1,6 +1,6 @@
 package com.backend.disney.security;
 
-import com.backend.disney.services.impl.UserService;
+import com.backend.disney.services.impl.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -22,7 +22,7 @@ public class JwtFilter extends OncePerRequestFilter {
     private JwtUtil jwtUtil;
 
     @Autowired
-    private UserService usuarioService;
+    private UserDetailsServiceImpl detailsService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest,
@@ -38,7 +38,7 @@ public class JwtFilter extends OncePerRequestFilter {
             String username = jwtUtil.extractUsername(jwt);
 
             if (username != null && SecurityContextHolder.getContext().getAuthentication() == null){
-                UserDetails userDetails = usuarioService.loadUserByUsername(username);
+                UserDetails userDetails = detailsService.loadUserByUsername(username);
 
                 if (jwtUtil.validateToken(jwt, userDetails)){
                     UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());

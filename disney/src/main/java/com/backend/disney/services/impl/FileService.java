@@ -13,6 +13,7 @@ import java.nio.file.Paths;
 public class FileService implements IFileService {
     @Override
     public String saveFileInFolder(MultipartFile file) throws IOException {
+   if(!file.isEmpty()){
         Path directorioImagenes = Paths.get("src//main/resources//static/images");
         String rutaAbsoluta = directorioImagenes.toFile().getAbsolutePath();
 
@@ -21,5 +22,7 @@ public class FileService implements IFileService {
         Files.write(rutaCompleta, bytesImg);
 
         return file.getOriginalFilename();
+    }return "No Image";
+
     }
 }

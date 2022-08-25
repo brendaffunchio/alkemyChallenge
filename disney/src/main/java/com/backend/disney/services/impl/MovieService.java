@@ -116,7 +116,7 @@ public class MovieService implements IMovieService {
         if (!name.isEmpty()) {
             movieDTOS = mapper.mapMoviesToMoviesDTO(repository.findAllByName(name));
 
-        } else if (idGenre != null) {
+        } else if (!idGenre.isEmpty()) {
 
             movieDTOS = mapper.mapMoviesToMoviesDTO(repository.findAllByGenre(idGenre));
 

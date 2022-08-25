@@ -110,5 +110,4 @@ public class ValidationControllerAdvice {
     String onMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException e) {
         return "Incorrect param type";
     }
-
 }

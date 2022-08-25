@@ -10,13 +10,11 @@ import java.util.List;
 @Repository
 public interface ICharacterRepository extends JpaRepository<Character,String> {
 
-@Query(value="SELECT * FROM PERSONAJE WHERE borrado=false",nativeQuery = true)
-List<Character>findAll();
-    @Query(value="SELECT * FROM PERSONAJE WHERE nombre LIKE %:name% AND borrado=false", nativeQuery = true)
+    @Query(value="SELECT * FROM PERSONAJE WHERE nombre LIKE %:name%", nativeQuery = true)
     List<Character> findAllByName(String name);
 
-    @Query(value="SELECT * FROM PERSONAJE p  WHERE borrado=false AND p.edad = :edad", nativeQuery = true)
+    @Query(value="SELECT * FROM PERSONAJE p  WHERE p.edad = :edad", nativeQuery = true)
     List<Character> findAllByAge(Integer edad);
-    @Query(value="SELECT * FROM PERSONAJE p  WHERE borrado=false AND p.peso = :peso", nativeQuery = true)
+    @Query(value="SELECT * FROM PERSONAJE p  WHERE p.peso = :peso", nativeQuery = true)
     List<Character> findAllByWeight(Integer peso);
 }

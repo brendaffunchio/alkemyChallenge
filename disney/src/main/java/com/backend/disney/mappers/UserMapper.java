@@ -16,11 +16,12 @@ user.setRole(role);
         return user;
     }
 
-    public UserDTO mapEntityToMovieDTOToResponse(User user) {
+    public UserDTO mapEntityToUserDTO(User user) {
 
         UserDTO dto= new UserDTO();
         dto.setUsername(user.getUsername());
         dto.setRole(user.getRole().getName());
+        dto.setPassword(user.getPassword());
         return dto;
     }
 }

@@ -13,6 +13,7 @@ import com.backend.disney.services.IMovieService;
 import com.backend.disney.services.ICharacterService;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -32,7 +33,7 @@ public class CharacterService implements ICharacterService {
 
     private IFileService fileService;
 
-    @Autowired
+    @Autowired@Lazy
     public CharacterService(ICharacterRepository repository, MovieMapper movieMapper, IFileService fileService, CharacterMapper mapper, IMovieService movieService) {
         this.repository = repository;
         this.movieService = movieService;
@@ -108,7 +109,7 @@ public class CharacterService implements ICharacterService {
         List<CharacterDTO> characterDTOS = new LinkedList<>();
         if (!name.isEmpty()) {
             characterDTOS = mapper.mapCharactersToCharactersDTO(repository.findAllByName(name));
-        } else if (idMovie != null) {
+        } else if (!idMovie.isEmpty()) {
             characterDTOS = getCharactersDTOByMovie(idMovie);
 
         } else if (age != null) {

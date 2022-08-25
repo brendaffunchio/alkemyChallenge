@@ -10,14 +10,14 @@ import javax.persistence.*;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name="Genero")
+@Table(name="genero")
 @Entity
 public class Genre {
 
     @Id
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(name = "UUID", strategy = "uuid2")
-    private Integer id;
+    private String id;
     @NotNull
     @Column(name="imagen")
     private String image;

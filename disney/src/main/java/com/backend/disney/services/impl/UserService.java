@@ -11,19 +11,12 @@ import com.backend.disney.services.IEmailService;
 import com.backend.disney.services.IRoleService;
 import com.backend.disney.services.IUserServices;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Service
-public class UserService implements IUserServices, UserDetailsService {
+public class UserService implements IUserServices{
 
     private IUserRepository repository;
     private BCryptPasswordEncoder encoder;
@@ -52,23 +45,19 @@ public class UserService implements IUserServices, UserDetailsService {
 
         User saved = repository.save(mapper.mapDTOToEntity(dto, role, password));
 
-        emailService.sendEmail(dto.getUsername());
-        return mapper.mapEntityToMovieDTOToResponse(saved);
+        emailService.sendEmail(saved.getUsername());
+        return mapper.mapEntityToUserDTO(saved);
 
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = repository.findByEmail(username);
+    public User getByEmail(String email) {
+        User user = repository.findByEmail(email);
 
         if (user == null) {
             throw new UsernameNotFoundException(ExceptionMessages.USER_NOT_FOUND);
         }
-
-        List<GrantedAuthority> rol = new ArrayList<>();
-        rol.add(new SimpleGrantedAuthority(user.getRole().getName()));
-
-        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), rol);
-
+return user;
     }
+
 }

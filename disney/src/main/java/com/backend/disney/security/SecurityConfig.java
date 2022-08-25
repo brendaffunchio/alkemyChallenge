@@ -1,6 +1,7 @@
 package com.backend.disney.security;
 
-import com.backend.disney.services.impl.UserService;
+import com.backend.disney.services.IUserServices;
+import com.backend.disney.services.impl.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,6 +11,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 
@@ -18,13 +20,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    private JwtFilter jwtFilter;
-
-    @Autowired
-    private JwtUtil jwtUtil;
-
-    @Autowired
-    private UserService usuarioService;
+    UserDetailsServiceImpl detailsService;
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
@@ -33,13 +29,25 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(usuarioService).passwordEncoder(passwordEncoder());
+        auth.userDetailsService(detailsService).passwordEncoder(passwordEncoder());
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable().authorizeRequests()
-                .antMatchers(HttpMethod.POST, "/auth/login").permitAll()
+        http
+                // Disabling csrf, needed for session cookie authentication, since a token-based authentication protocol
+                // is going to be used instead.
+                .csrf().disable()
+                // Setting the state policy as stateless, disabling the use of persisting sessions for security context.
+                .sessionManagement(
+                        httpSecuritySessionManagementConfigurer -> httpSecuritySessionManagementConfigurer
+                                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                )
+                // Endpoint restriction
+                .authorizeRequests(
+                        expressionInterceptUrlRegistry -> expressionInterceptUrlRegistry
+                                // Routes to register and login
+                                .antMatchers(HttpMethod.POST, "/auth/login").permitAll()
                 .antMatchers(HttpMethod.POST, "/auth/register").permitAll()
                 .antMatchers(HttpMethod.POST,"/role/create").permitAll()
                 .antMatchers(HttpMethod.POST, "/genre/create").permitAll()
@@ -55,8 +63,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.DELETE, "/characters/delete").permitAll()
                 .antMatchers(HttpMethod.GET, "/characters/getDetails").permitAll()
                 .antMatchers(HttpMethod.GET, "/characters/").permitAll()
-                .anyRequest().authenticated().and();
 
+
+
+                                .anyRequest().hasAnyAuthority("USER","ADMIN")
+
+                );
 
     }
 
@@ -68,7 +80,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean("authenticationManager")
     @Override
-    protected AuthenticationManager authenticationManager() throws Exception {
+    public AuthenticationManager authenticationManager() throws Exception {
         return super.authenticationManager();
     }
 

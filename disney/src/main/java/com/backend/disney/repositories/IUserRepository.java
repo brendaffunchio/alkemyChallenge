@@ -9,10 +9,10 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface IUserRepository extends JpaRepository<User,String> {
 
-    @Query(value="SELECT * FROM USUARIO WHERE USERNAME = :username AND PASSWORD = :password", nativeQuery = true)
+    @Query(value="SELECT * FROM USUARIO WHERE email = :username AND contrasena = :password", nativeQuery = true)
     User findByEmailAndPassword(String username, String password);
 
-    @Query(value="SELECT * FROM USUARIO WHERE USERNAME = :username", nativeQuery = true)
+    @Query(value="SELECT * FROM USUARIO WHERE email = :username", nativeQuery = true)
     User findByEmail(String username);
 
 }

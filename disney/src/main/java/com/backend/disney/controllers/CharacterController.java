@@ -26,7 +26,7 @@ public class CharacterController {
     }
 
     @PostMapping(path = "/create")
-    public ResponseEntity<?> createCharacter(@ModelAttribute CharacterDTOComplete dto, @RequestParam("file") MultipartFile file) {
+    public ResponseEntity<?> createCharacter(@Valid @ModelAttribute CharacterDTOComplete dto, @RequestParam("file") MultipartFile file) {
         try {
 
             return new ResponseEntity<>(service.create(dto, file), HttpStatus.CREATED);

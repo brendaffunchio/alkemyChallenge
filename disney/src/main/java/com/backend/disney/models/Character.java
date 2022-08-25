@@ -11,8 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 @Getter
 @Setter
-@Table(name="Personaje")
-@SQLDelete(sql = "UPDATE Personaje SET borrado = true where id = ?")
+@Table(name="personaje")
+@SQLDelete(sql = "UPDATE personaje SET borrado = true where id = ?")
 @Where(clause = "borrado = false")
 @AllArgsConstructor
 @NoArgsConstructor
@@ -22,7 +22,7 @@ public class Character {
     @Id
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(name = "UUID", strategy = "uuid2")
-    private Integer id;
+    private String id;
 
     @NotNull
     @Column(name = "imagen")

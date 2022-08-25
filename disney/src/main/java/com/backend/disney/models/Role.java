@@ -8,7 +8,7 @@ import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter
-@Table(name="Rol")
+@Table(name="rol")
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -16,7 +16,7 @@ public class Role {
     @Id
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(name = "UUID", strategy = "uuid2")
-    private Long id;
+    private String id;
     @NotNull
     @Column(unique = true,name="nombre")
     private String name;
