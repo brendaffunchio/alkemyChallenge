@@ -18,7 +18,17 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+    /*@EnableWebSecurity es una anotación de marcador.
+    Permite que Spring encuentre (es una @Configuration
+    y, por lo tanto, @Component ) y aplique automáticamente
+    la clase a la WebSecurity global. Si no anoto nada de
+        mi clase con @EnableWebSecurity, la aplicación
+        sigue solicitando el nombre de usuario y la contraseña.)
 
+si queremos nuestra propia configuración de seguridad, simplemente podemos agregar un
+WebSecurityConfigurerAdapter personalizado. Esto deshabilitará la configuración automática predeterminada
+y habilitará nuestra configuración de seguridad personalizad
+       */
     @Autowired
     UserDetailsServiceImpl detailsService;
 
@@ -48,25 +58,24 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         expressionInterceptUrlRegistry -> expressionInterceptUrlRegistry
                                 // Routes to register and login
                                 .antMatchers(HttpMethod.POST, "/auth/login").permitAll()
-                .antMatchers(HttpMethod.POST, "/auth/register").permitAll()
-                .antMatchers(HttpMethod.POST,"/role/create").permitAll()
-                .antMatchers(HttpMethod.POST, "/genre/create").permitAll()
-                .antMatchers(HttpMethod.POST, "/movies/create").permitAll()
-                .antMatchers(HttpMethod.PUT, "/movies/edit").permitAll()
-                .antMatchers(HttpMethod.DELETE, "/movies/delete").permitAll()
-                .antMatchers(HttpMethod.GET, "/movies/getDetails").permitAll()
-                .antMatchers(HttpMethod.GET, "/movies/").permitAll()
-                .antMatchers(HttpMethod.POST, "/movies/{idMovie}/characters/{idCharacter}").permitAll()
-                .antMatchers(HttpMethod.DELETE, "/movies/{movieId}/characters/{characterId}").permitAll()
-                .antMatchers(HttpMethod.POST, "/characters/create").permitAll()
-                .antMatchers(HttpMethod.PUT, "/characters/edit").permitAll()
-                .antMatchers(HttpMethod.DELETE, "/characters/delete").permitAll()
-                .antMatchers(HttpMethod.GET, "/characters/getDetails").permitAll()
-                .antMatchers(HttpMethod.GET, "/characters/").permitAll()
+                                .antMatchers(HttpMethod.POST, "/auth/register").permitAll()
+                                .antMatchers(HttpMethod.POST, "/role/create").permitAll()
+                                .antMatchers(HttpMethod.POST, "/genre/create").permitAll()
+                                .antMatchers(HttpMethod.POST, "/movies/create").permitAll()
+                                .antMatchers(HttpMethod.PUT, "/movies/edit").permitAll()
+                                .antMatchers(HttpMethod.DELETE, "/movies/delete").permitAll()
+                                .antMatchers(HttpMethod.GET, "/movies/getDetails").permitAll()
+                                .antMatchers(HttpMethod.GET, "/movies/").permitAll()
+                                .antMatchers(HttpMethod.POST, "/movies/{idMovie}/characters/{idCharacter}").permitAll()
+                                .antMatchers(HttpMethod.DELETE, "/movies/{movieId}/characters/{characterId}").permitAll()
+                                .antMatchers(HttpMethod.POST, "/characters/create").permitAll()
+                                .antMatchers(HttpMethod.PUT, "/characters/edit").permitAll()
+                                .antMatchers(HttpMethod.DELETE, "/characters/delete").permitAll()
+                                .antMatchers(HttpMethod.GET, "/characters/getDetails").permitAll()
+                                .antMatchers(HttpMethod.GET, "/characters/").permitAll()
 
 
-
-                                .anyRequest().hasAnyAuthority("USER","ADMIN")
+                                .anyRequest().hasAnyAuthority("USER", "ADMIN")
 
                 );
 

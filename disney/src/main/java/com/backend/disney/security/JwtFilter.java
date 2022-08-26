@@ -17,7 +17,17 @@ import java.io.IOException;
 
 @Component
 public class JwtFilter extends OncePerRequestFilter {
-
+  /*
+   es posible que queramos asegurarnos de que un filtro específico se
+   invoque solo una vez por solicitud. Un
+    caso de uso común es cuando se trabaja con Spring Security.
+     Cuando una solicitud pasa por la cadena de filtros, es
+    posible que deseemos que algunas de las acciones de autenticación
+     sucedan solo una vez para la solicitud.
+    Podemos extender OncePerRequestFilter en tales situaciones.
+    Spring garantiza que OncePerRequestFilter se
+    ejecuta solo una vez para una solicitud determinada
+            */
     @Autowired
     private JwtUtil jwtUtil;
 
